@@ -1,10 +1,11 @@
 [gd_scene format=4 uid="uid://bem03h5wmwj0l"]
 
+[ext_resource type="Script" uid="uid://8vx8h61hgiet" path="res://Scenes/main.gd" id="1_21xkr"]
 [ext_resource type="Texture2D" uid="uid://bkij2flgtl2wf" path="res://Sprites/Tile.png" id="1_jjgbg"]
 [ext_resource type="Texture2D" uid="uid://iiuat643kjrx" path="res://Sprites/DoctorHouse.png" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://f65lxfyacxto" path="res://Scenes/doctor.tscn" id="3_8gbba"]
-[ext_resource type="Texture2D" uid="uid://baxrsx7nbm708" path="res://Sprites/Garden.png" id="3_kry3j"]
 [ext_resource type="Texture2D" uid="uid://cn0gf8807ibnf" path="res://Sprites/House1.png" id="5_21xkr"]
+[ext_resource type="PackedScene" uid="uid://ex8v75fywms3" path="res://Scenes/garden.tscn" id="5_kry3j"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jjvhh"]
 texture = ExtResource("1_jjgbg")
@@ -34,6 +35,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_21xkr")
 
 [node name="TileMapLayer4" type="TileMapLayer" parent="." unique_id=1480991642]
 modulate = Color(0.8638137, 0.86381376, 0.8638137, 1)
@@ -58,13 +61,16 @@ tile_set = SubResource("TileSet_kry3j")
 position = Vector2(496, 345)
 texture = ExtResource("2_bo1nx")
 
-[node name="Garden" type="Sprite2D" parent="." unique_id=974877648]
-position = Vector2(749, 340)
-texture = ExtResource("3_kry3j")
-
 [node name="Doctor" parent="." unique_id=1854216776 instance=ExtResource("3_8gbba")]
 position = Vector2(416, 388)
 
 [node name="House1" type="Sprite2D" parent="." unique_id=1295263433]
 position = Vector2(377, 500)
 texture = ExtResource("5_21xkr")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=165865420]
+position = Vector2(576, 327)
+
+[node name="Garden" parent="." unique_id=1075370277 instance=ExtResource("5_kry3j")]
+z_index = 1
+position = Vector2(747, 340)

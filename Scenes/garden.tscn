@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://ex8v75fywms3"]
+
+[ext_resource type="Script" uid="uid://dpf4mgr75yyy1" path="res://Scenes/garden.gd" id="1_mlwpc"]
+[ext_resource type="Texture2D" uid="uid://bdcpct7j23nmq" path="res://Sprites/Herb.png" id="1_n2vb7"]
+[ext_resource type="Texture2D" uid="uid://baxrsx7nbm708" path="res://Sprites/Garden.png" id="2_mlwpc"]
+[ext_resource type="Texture2D" uid="uid://u1y3byclgexk" path="res://Sprites/HerbSelector.png" id="4_pbfy5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pbfy5"]
+size = Vector2(104, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jh4tr"]
+size = Vector2(2000, 2000)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pbfy5"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jh4tr"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8d8dg"]
+radius = 24.0
+
+[node name="Garden" type="Node2D" unique_id=1075370277]
+script = ExtResource("1_mlwpc")
+
+[node name="Herb" type="Sprite2D" parent="." unique_id=1977208375]
+visible = false
+texture = ExtResource("1_n2vb7")
+hframes = 2
+vframes = 2
+
+[node name="Garden" type="Sprite2D" parent="." unique_id=351556399]
+texture = ExtResource("2_mlwpc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=454611890]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=501228863]
+position = Vector2(0, 24)
+shape = SubResource("RectangleShape2D_pbfy5")
+
+[node name="HerbSelector" type="Sprite2D" parent="." unique_id=784587688]
+visible = false
+position = Vector2(0, 25)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("4_pbfy5")
+
+[node name="BG" type="Area2D" parent="HerbSelector" unique_id=43381712]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HerbSelector/BG" unique_id=46362266]
+shape = SubResource("RectangleShape2D_jh4tr")
+
+[node name="Red" type="Area2D" parent="HerbSelector" unique_id=1774967129]
+position = Vector2(0, -92)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HerbSelector/Red" unique_id=1993492103]
+shape = SubResource("CircleShape2D_pbfy5")
+
+[node name="Blue" type="Area2D" parent="HerbSelector" unique_id=1394246576]
+position = Vector2(-70, 63)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HerbSelector/Blue" unique_id=1346433401]
+shape = SubResource("CircleShape2D_jh4tr")
+
+[node name="Yellow" type="Area2D" parent="HerbSelector" unique_id=193851018]
+position = Vector2(65, 63)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HerbSelector/Yellow" unique_id=1624336425]
+shape = SubResource("CircleShape2D_8d8dg")
+
+[node name="Timer" type="Timer" parent="." unique_id=1365052197]
+wait_time = 4.0
+one_shot = true
+
+[node name="Time" type="Label" parent="." unique_id=1825058321]
+visible = false
+offset_left = 18.0
+offset_top = 26.0
+offset_right = 58.0
+offset_bottom = 49.0
+text = "0:0"
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="HerbSelector/BG" to="." method="_on_bg_input_event"]
+[connection signal="input_event" from="HerbSelector/Red" to="." method="_on_red_input_event"]
+[connection signal="mouse_entered" from="HerbSelector/Red" to="." method="_on_red_mouse_entered"]
+[connection signal="mouse_exited" from="HerbSelector/Red" to="." method="_on_red_mouse_exited"]
+[connection signal="input_event" from="HerbSelector/Blue" to="." method="_on_blue_input_event"]
+[connection signal="mouse_entered" from="HerbSelector/Blue" to="." method="_on_blue_mouse_entered"]
+[connection signal="mouse_exited" from="HerbSelector/Blue" to="." method="_on_blue_mouse_exited"]
+[connection signal="input_event" from="HerbSelector/Yellow" to="." method="_on_yellow_input_event"]
+[connection signal="mouse_entered" from="HerbSelector/Yellow" to="." method="_on_yellow_mouse_entered"]
+[connection signal="mouse_exited" from="HerbSelector/Yellow" to="." method="_on_yellow_mouse_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
