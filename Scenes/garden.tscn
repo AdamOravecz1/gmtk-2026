@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bdcpct7j23nmq" path="res://Sprites/Herb.png" id="1_n2vb7"]
 [ext_resource type="Texture2D" uid="uid://baxrsx7nbm708" path="res://Sprites/Garden.png" id="2_mlwpc"]
 [ext_resource type="Texture2D" uid="uid://u1y3byclgexk" path="res://Sprites/HerbSelector.png" id="4_pbfy5"]
+[ext_resource type="FontFile" uid="uid://dhw8iuiik1b23" path="res://PixelOperator.ttf" id="5_jh4tr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pbfy5"]
 size = Vector2(104, 68)
@@ -73,11 +74,13 @@ one_shot = true
 
 [node name="Time" type="Label" parent="." unique_id=1825058321]
 visible = false
-offset_left = 18.0
-offset_top = 26.0
-offset_right = 58.0
-offset_bottom = 49.0
-text = "0:0"
+offset_left = 16.0
+offset_top = 35.0
+offset_right = 56.0
+offset_bottom = 58.0
+theme_override_fonts/font = ExtResource("5_jh4tr")
+theme_override_font_sizes/font_size = 8
+text = "00:0"
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

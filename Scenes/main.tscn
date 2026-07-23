@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bkij2flgtl2wf" path="res://Sprites/Tile.png" id="1_jjgbg"]
 [ext_resource type="Texture2D" uid="uid://iiuat643kjrx" path="res://Sprites/DoctorHouse.png" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://f65lxfyacxto" path="res://Scenes/doctor.tscn" id="3_8gbba"]
-[ext_resource type="Texture2D" uid="uid://cn0gf8807ibnf" path="res://Sprites/House1.png" id="5_21xkr"]
+[ext_resource type="PackedScene" uid="uid://pcp40x1liaid" path="res://Scenes/house.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://ex8v75fywms3" path="res://Scenes/garden.tscn" id="5_kry3j"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jjvhh"]
@@ -27,6 +27,48 @@ texture_region_size = Vector2i(32, 32)
 [sub_resource type="TileSet" id="TileSet_kry3j"]
 tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_jjvhh")
+
+[sub_resource type="Curve2D" id="Curve2D_21xkr"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 184, 0, 0, 0, 0, 0, 202, -5, 0, 0, 0, 0, 439, -5, 0, 0, 0, 0, 465, 0, 0, 0, 0, 0, 695, 0, 0, 0, 0, 0, 714, -5, 0, 0, 0, 0, 1080, -5, 0, 0, 0, 0, 1103, 0, 0, 0, 0, 0, 1134, 0)
+}
+point_count = 10
+
+[sub_resource type="Curve2D" id="Curve2D_6bp64"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 53, 5, 0, 0, 0, 0, 83, 5, 0, 0, 0, 0, 103, 0, 0, 0, 0, 0, 281, 0, 0, 0, 0, 0, 309, 5, 0, 0, 0, 0, 663, 5, 0, 0, 0, 0, 680, 0, 0, 0, 0, 0, 792, 0, 0, 0, 0, 0, 819, 5, 0, 0, 0, 0, 1135, 5)
+}
+point_count = 12
+
+[sub_resource type="Curve2D" id="Curve2D_344ge"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 20, -5, 0, 0, 0, 0, 225, -5, 0, 0, 0, 0, 251, 0, 0, 0, 0, 0, 354, 0, 0, 0, 0, 0, 372, -5, 0, 0, 0, 0, 641, -5, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 803, 0, 0, 0, 0, 0, 820, -5, 0, 0, 0, 0, 963, -5, 0, 0, 0, 0, 987, 0, 0, 0, 0, 0, 1144, 0)
+}
+point_count = 13
+
+[sub_resource type="Curve2D" id="Curve2D_ynf5e"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -160)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_hptm8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -160)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_d1ilt"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -160)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_6iyac"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -160)
+}
+point_count = 2
 
 [node name="Main" type="Control" unique_id=1527118056]
 layout_mode = 3
@@ -61,16 +103,95 @@ tile_set = SubResource("TileSet_kry3j")
 position = Vector2(496, 345)
 texture = ExtResource("2_bo1nx")
 
-[node name="Doctor" parent="." unique_id=1854216776 instance=ExtResource("3_8gbba")]
-position = Vector2(416, 388)
+[node name="Garden" parent="." unique_id=1075370277 instance=ExtResource("5_kry3j")]
+position = Vector2(747, 340)
 
-[node name="House1" type="Sprite2D" parent="." unique_id=1295263433]
-position = Vector2(377, 500)
-texture = ExtResource("5_21xkr")
+[node name="House" parent="." unique_id=822289628 instance=ExtResource("5_21xkr")]
+position = Vector2(289, 500)
+level = 1
+
+[node name="House2" parent="." unique_id=1933845190 instance=ExtResource("5_21xkr")]
+position = Vector2(891, 345)
+level = 2
+
+[node name="House3" parent="." unique_id=756952210 instance=ExtResource("5_21xkr")]
+position = Vector2(439, 180)
+level = 3
+
+[node name="House4" parent="." unique_id=519198223 instance=ExtResource("5_21xkr")]
+position = Vector2(170, 340)
+level = 2
+
+[node name="House5" parent="." unique_id=1924347348 instance=ExtResource("5_21xkr")]
+position = Vector2(1048, 500)
+level = 1
+
+[node name="House6" parent="." unique_id=358843777 instance=ExtResource("5_21xkr")]
+position = Vector2(908, 180)
+level = 3
+
+[node name="Level1" type="Path2D" parent="." unique_id=315161447]
+position = Vector2(14, 548)
+curve = SubResource("Curve2D_21xkr")
+
+[node name="Level2" type="Path2D" parent="." unique_id=1931168859]
+position = Vector2(14, 383)
+curve = SubResource("Curve2D_6bp64")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Level2" unique_id=715544431]
+position = Vector2(-4, 0)
+rotates = false
+
+[node name="Doctor3" parent="Level2/PathFollow2D" unique_id=307772190 instance=ExtResource("3_8gbba")]
+
+[node name="Level3" type="Path2D" parent="." unique_id=2039259244]
+position = Vector2(3, 228)
+curve = SubResource("Curve2D_344ge")
+
+[node name="Stairs1" type="Path2D" parent="." unique_id=1897500769]
+position = Vector2(80, 548)
+curve = SubResource("Curve2D_ynf5e")
+
+[node name="Stairs2" type="Path2D" parent="." unique_id=1882836576]
+position = Vector2(559, 548)
+curve = SubResource("Curve2D_hptm8")
+
+[node name="Stairs3" type="Path2D" parent="." unique_id=1235796365]
+position = Vector2(336, 388)
+curve = SubResource("Curve2D_d1ilt")
+
+[node name="Stairs4" type="Path2D" parent="." unique_id=1090051613]
+position = Vector2(1039, 388)
+curve = SubResource("Curve2D_6iyac")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=165865420]
 position = Vector2(576, 327)
 
-[node name="Garden" parent="." unique_id=1075370277 instance=ExtResource("5_kry3j")]
-z_index = 1
-position = Vector2(747, 340)
+[node name="LevelChangers" type="Control" parent="." unique_id=949330900]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Up1" type="Node2D" parent="LevelChangers" unique_id=1914610564]
+position = Vector2(80, 548)
+
+[node name="Up2" type="Node2D" parent="LevelChangers" unique_id=176784991]
+position = Vector2(559, 548)
+
+[node name="Up3" type="Node2D" parent="LevelChangers" unique_id=795119417]
+position = Vector2(336, 388)
+
+[node name="Up4" type="Node2D" parent="LevelChangers" unique_id=1545114546]
+position = Vector2(1039, 388)
+
+[node name="Down1" type="Node2D" parent="LevelChangers" unique_id=1173718179]
+position = Vector2(80, 388)
+
+[node name="Down2" type="Node2D" parent="LevelChangers" unique_id=222819986]
+position = Vector2(559, 388)
+
+[node name="Down3" type="Node2D" parent="LevelChangers" unique_id=961199056]
+position = Vector2(336, 228)
+
+[node name="Down4" type="Node2D" parent="LevelChangers" unique_id=123090809]
+position = Vector2(1039, 228)
