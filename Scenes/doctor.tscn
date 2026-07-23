@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://f65lxfyacxto"]
+
+[ext_resource type="Texture2D" uid="uid://dgt0mk54x1ee6" path="res://Sprites/Doctor.png" id="1_ujl42"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnnr0"]
+atlas = ExtResource("1_ujl42")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28l5i"]
+atlas = ExtResource("1_ujl42")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cmoey"]
+atlas = ExtResource("1_ujl42")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b43nm"]
+atlas = ExtResource("1_ujl42")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8cerb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnnr0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28l5i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cmoey")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b43nm")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[node name="Doctor" type="AnimatedSprite2D" unique_id=1854216776]
+sprite_frames = SubResource("SpriteFrames_8cerb")
+autoplay = "default"
+frame_progress = 0.2453814
