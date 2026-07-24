@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://dy4j81122cq3g" path="res://Scenes/doctor_house.tscn" id="3_21xkr"]
 [ext_resource type="PackedScene" uid="uid://pcp40x1liaid" path="res://Scenes/house.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://ex8v75fywms3" path="res://Scenes/garden.tscn" id="5_kry3j"]
+[ext_resource type="Texture2D" uid="uid://ve82pymwsfmb" path="res://Sprites/Moon.png" id="7_6bp64"]
+[ext_resource type="Texture2D" uid="uid://u868yryacxo0" path="res://Sprites/32Design.png" id="8_344ge"]
+[ext_resource type="Texture2D" uid="uid://cvyuo2ln271rs" path="res://Sprites/64Design.png" id="9_ynf5e"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jjvhh"]
 texture = ExtResource("1_jjgbg")
@@ -37,17 +40,62 @@ _data = {
 }
 point_count = 10
 
+[sub_resource type="Shader" id="Shader_fnnr0"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_size = 1.0;
+
+void fragment() {
+	vec4 color = texture(TEXTURE, UV);
+
+	vec2 pixel = TEXTURE_PIXEL_SIZE * outline_size;
+
+	float left  = texture(TEXTURE, UV + vec2(-pixel.x, 0.0)).a;
+	float right = texture(TEXTURE, UV + vec2( pixel.x, 0.0)).a;
+	float up    = texture(TEXTURE, UV + vec2(0.0, -pixel.y)).a;
+	float down  = texture(TEXTURE, UV + vec2(0.0,  pixel.y)).a;
+
+	float edge = max(max(left, right), max(up, down));
+
+	if (color.a == 0.0 && edge > 0.0) {
+		COLOR = outline_color;
+	} else {
+		COLOR = color;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ynf5e"]
+shader = SubResource("Shader_fnnr0")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 0.0
+
 [sub_resource type="Curve2D" id="Curve2D_6bp64"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 53, 5, 0, 0, 0, 0, 83, 5, 0, 0, 0, 0, 103, 0, 0, 0, 0, 0, 281, 0, 0, 0, 0, 0, 309, 5, 0, 0, 0, 0, 663, 5, 0, 0, 0, 0, 680, 0, 0, 0, 0, 0, 792, 0, 0, 0, 0, 0, 819, 5, 0, 0, 0, 0, 1135, 5)
 }
 point_count = 12
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hptm8"]
+shader = SubResource("Shader_fnnr0")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d1ilt"]
+shader = SubResource("Shader_fnnr0")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 0.0
+
 [sub_resource type="Curve2D" id="Curve2D_344ge"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 20, -5, 0, 0, 0, 0, 225, -5, 0, 0, 0, 0, 251, 0, 0, 0, 0, 0, 354, 0, 0, 0, 0, 0, 372, -5, 0, 0, 0, 0, 641, -5, 0, 0, 0, 0, 667, 0, 0, 0, 0, 0, 803, 0, 0, 0, 0, 0, 820, -5, 0, 0, 0, 0, 963, -5, 0, 0, 0, 0, 987, 0, 0, 0, 0, 0, 1144, 0)
 }
 point_count = 13
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6iyac"]
+shader = SubResource("Shader_fnnr0")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 0.0
 
 [sub_resource type="Curve2D" id="Curve2D_ynf5e"]
 _data = {
@@ -165,6 +213,7 @@ progress = 700.96826
 rotates = false
 
 [node name="Doctor3" parent="Level1/PathFollow2D" unique_id=1854216776 instance=ExtResource("3_8gbba")]
+material = SubResource("ShaderMaterial_ynf5e")
 
 [node name="Level2" type="Path2D" parent="." unique_id=1931168859]
 position = Vector2(14, 383)
@@ -176,6 +225,7 @@ progress = 359.62457
 rotates = false
 
 [node name="Doctor3" parent="Level2/PathFollow2D" unique_id=307772190 instance=ExtResource("3_8gbba")]
+material = SubResource("ShaderMaterial_hptm8")
 
 [node name="PathFollow2D2" type="PathFollow2D" parent="Level2" unique_id=1194148934]
 position = Vector2(967.9739, 5)
@@ -183,6 +233,7 @@ progress = 974.63965
 rotates = false
 
 [node name="Doctor3" parent="Level2/PathFollow2D2" unique_id=1954553856 instance=ExtResource("3_8gbba")]
+material = SubResource("ShaderMaterial_d1ilt")
 
 [node name="Level3" type="Path2D" parent="." unique_id=2039259244]
 position = Vector2(3, 228)
@@ -194,6 +245,7 @@ progress = 679.8927
 rotates = false
 
 [node name="Doctor3" parent="Level3/PathFollow2D" unique_id=1157490437 instance=ExtResource("3_8gbba")]
+material = SubResource("ShaderMaterial_6iyac")
 
 [node name="Stairs1" type="Path2D" parent="." unique_id=1897500769]
 position = Vector2(80, 548)
@@ -247,5 +299,398 @@ position = Vector2(1039, 228)
 wait_time = 5.0
 one_shot = true
 autostart = true
+
+[node name="Moon" type="Sprite2D" parent="." unique_id=420962235]
+modulate = Color(1.1638972, 1.1638972, 1.1638972, 1)
+position = Vector2(1104, 61)
+texture = ExtResource("7_6bp64")
+
+[node name="Design32" type="Control" parent="." unique_id=1113172667]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="32Design" type="Sprite2D" parent="Design32" unique_id=60768184]
+position = Vector2(1128, 547)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+
+[node name="32Design2" type="Sprite2D" parent="Design32" unique_id=624368667]
+position = Vector2(952, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+
+[node name="32Design3" type="Sprite2D" parent="Design32" unique_id=36605842]
+position = Vector2(515, 222)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+
+[node name="32Design4" type="Sprite2D" parent="Design32" unique_id=32353108]
+position = Vector2(34, 222)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+
+[node name="32Design5" type="Sprite2D" parent="Design32" unique_id=592523486]
+position = Vector2(248, 382)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+
+[node name="32Design6" type="Sprite2D" parent="Design32" unique_id=98653477]
+position = Vector2(146, 547)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+
+[node name="32Design7" type="Sprite2D" parent="Design32" unique_id=2096030011]
+position = Vector2(248, 542)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="32Design8" type="Sprite2D" parent="Design32" unique_id=933039278]
+position = Vector2(856, 542)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="32Design9" type="Sprite2D" parent="Design32" unique_id=1316578722]
+position = Vector2(844, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="32Design10" type="Sprite2D" parent="Design32" unique_id=1697115124]
+position = Vector2(396, 222)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="32Design11" type="Sprite2D" parent="Design32" unique_id=1160953885]
+position = Vector2(866, 222)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="32Design12" type="Sprite2D" parent="Design32" unique_id=1165597131]
+position = Vector2(218, 382)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="32Design13" type="Sprite2D" parent="Design32" unique_id=307223512]
+position = Vector2(488, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 2
+
+[node name="32Design14" type="Sprite2D" parent="Design32" unique_id=289302833]
+position = Vector2(267, 227)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 2
+
+[node name="32Design15" type="Sprite2D" parent="Design32" unique_id=1256692825]
+position = Vector2(666, 547)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 2
+
+[node name="32Design16" type="Sprite2D" parent="Design32" unique_id=371577108]
+position = Vector2(600, 547)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 3
+
+[node name="32Design17" type="Sprite2D" parent="Design32" unique_id=1423018466]
+position = Vector2(579, 222)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 3
+
+[node name="32Design18" type="Sprite2D" parent="Design32" unique_id=822622037]
+position = Vector2(97, 222)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 3
+
+[node name="32Design19" type="Sprite2D" parent="Design32" unique_id=1003889098]
+position = Vector2(48, 547)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 3
+
+[node name="32Design20" type="Sprite2D" parent="Design32" unique_id=2074957691]
+position = Vector2(616, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 3
+
+[node name="32Design21" type="Sprite2D" parent="Design32" unique_id=493893203]
+position = Vector2(403, 386)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 3
+
+[node name="32Design22" type="Sprite2D" parent="Design32" unique_id=334731986]
+position = Vector2(522, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 4
+
+[node name="32Design23" type="Sprite2D" parent="Design32" unique_id=61886492]
+position = Vector2(440, 542)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 4
+
+[node name="32Design24" type="Sprite2D" parent="Design32" unique_id=865009520]
+position = Vector2(172, 547)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 4
+
+[node name="32Design25" type="Sprite2D" parent="Design32" unique_id=1166261359]
+position = Vector2(136, 382)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 4
+
+[node name="32Design26" type="Sprite2D" parent="Design32" unique_id=1528699285]
+position = Vector2(37, 222)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 4
+
+[node name="32Design27" type="Sprite2D" parent="Design32" unique_id=446670113]
+position = Vector2(738, 227)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 4
+
+[node name="32Design28" type="Sprite2D" parent="Design32" unique_id=1368918488]
+position = Vector2(947, 542)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 4
+
+[node name="32Design29" type="Sprite2D" parent="Design32" unique_id=1721172664]
+position = Vector2(901, 542)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 5
+
+[node name="32Design30" type="Sprite2D" parent="Design32" unique_id=631461308]
+position = Vector2(789, 542)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 5
+
+[node name="32Design31" type="Sprite2D" parent="Design32" unique_id=90138704]
+position = Vector2(264, 382)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 5
+
+[node name="32Design32" type="Sprite2D" parent="Design32" unique_id=1684102006]
+position = Vector2(791, 382)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 5
+
+[node name="32Design33" type="Sprite2D" parent="Design32" unique_id=941796790]
+position = Vector2(1084, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 5
+
+[node name="32Design34" type="Sprite2D" parent="Design32" unique_id=2002838208]
+position = Vector2(1095, 227)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 5
+
+[node name="32Design35" type="Sprite2D" parent="Design32" unique_id=1697265344]
+position = Vector2(216, 222)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 5
+
+[node name="32Design36" type="Sprite2D" parent="Design32" unique_id=1140227471]
+position = Vector2(504, 547)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 6
+
+[node name="32Design37" type="Sprite2D" parent="Design32" unique_id=1888080367]
+position = Vector2(1113, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 6
+
+[node name="32Design38" type="Sprite2D" parent="Design32" unique_id=1858600709]
+position = Vector2(652, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 6
+
+[node name="32Design39" type="Sprite2D" parent="Design32" unique_id=660767173]
+position = Vector2(355, 387)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 7
+
+[node name="32Design40" type="Sprite2D" parent="Design32" unique_id=2141462395]
+position = Vector2(881, 542)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 7
+
+[node name="32Design41" type="Sprite2D" parent="Design32" unique_id=757599503]
+position = Vector2(1133, 227)
+texture = ExtResource("8_344ge")
+hframes = 3
+vframes = 3
+frame = 7
+
+[node name="Design64" type="Control" parent="." unique_id=1712692584]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="64Design7" type="Sprite2D" parent="Design64" unique_id=2059171557]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+position = Vector2(1016, 211)
+texture = ExtResource("9_ynf5e")
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="64Design" type="Sprite2D" parent="Design64" unique_id=1735338629]
+position = Vector2(1016, 211)
+texture = ExtResource("9_ynf5e")
+hframes = 2
+vframes = 2
+
+[node name="64Design8" type="Sprite2D" parent="Design64" unique_id=1405935417]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+position = Vector2(344, 211)
+texture = ExtResource("9_ynf5e")
+flip_h = true
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="64Design2" type="Sprite2D" parent="Design64" unique_id=352503527]
+position = Vector2(344, 211)
+texture = ExtResource("9_ynf5e")
+flip_h = true
+hframes = 2
+vframes = 2
+
+[node name="64Design9" type="Sprite2D" parent="Design64" unique_id=809937117]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+position = Vector2(573, 371)
+texture = ExtResource("9_ynf5e")
+flip_h = true
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="64Design3" type="Sprite2D" parent="Design64" unique_id=733939870]
+position = Vector2(573, 371)
+texture = ExtResource("9_ynf5e")
+flip_h = true
+hframes = 2
+vframes = 2
+
+[node name="64Design10" type="Sprite2D" parent="Design64" unique_id=1323296069]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+position = Vector2(72, 371)
+texture = ExtResource("9_ynf5e")
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="64Design4" type="Sprite2D" parent="Design64" unique_id=1081346339]
+position = Vector2(72, 371)
+texture = ExtResource("9_ynf5e")
+hframes = 2
+vframes = 2
+
+[node name="64Design11" type="Sprite2D" parent="Design64" unique_id=312667040]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+position = Vector2(931, 526)
+texture = ExtResource("9_ynf5e")
+flip_h = true
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="64Design5" type="Sprite2D" parent="Design64" unique_id=1212470006]
+position = Vector2(931, 526)
+texture = ExtResource("9_ynf5e")
+flip_h = true
+hframes = 2
+vframes = 2
+
+[node name="64Design12" type="Sprite2D" parent="Design64" unique_id=727294679]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+position = Vector2(542, 531)
+texture = ExtResource("9_ynf5e")
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="64Design6" type="Sprite2D" parent="Design64" unique_id=1881736336]
+position = Vector2(542, 531)
+texture = ExtResource("9_ynf5e")
+hframes = 2
+vframes = 2
+
+[node name="64Design13" type="Sprite2D" parent="Design64" unique_id=692651298]
+position = Vector2(17, 366)
+texture = ExtResource("9_ynf5e")
+hframes = 2
+vframes = 2
+frame = 2
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

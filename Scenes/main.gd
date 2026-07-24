@@ -1,5 +1,7 @@
 extends Control
 
+var hover_count := 0
+
 var chosen_houses: Array = []
 
 const color_lookup := {

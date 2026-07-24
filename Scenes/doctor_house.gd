@@ -44,10 +44,14 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 
 func _on_area_2d_mouse_entered() -> void:
 	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+	get_tree().current_scene.hover_count += 1
 
 
 func _on_area_2d_mouse_exited() -> void:
-	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+	get_tree().current_scene.hover_count -= 1
+	if get_tree().current_scene.hover_count <= 0:
+		get_tree().current_scene.hover_count = 0
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 
 
 func place_herb(c):

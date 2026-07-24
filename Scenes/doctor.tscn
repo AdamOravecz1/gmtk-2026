@@ -3,6 +3,36 @@
 [ext_resource type="Texture2D" uid="uid://dgt0mk54x1ee6" path="res://Sprites/Doctor.png" id="1_ujl42"]
 [ext_resource type="Script" uid="uid://d4k0g2jm1e6nn" path="res://Scenes/doctor.gd" id="2_fnnr0"]
 
+[sub_resource type="Shader" id="Shader_fnnr0"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_size = 1.0;
+
+void fragment() {
+	vec4 color = texture(TEXTURE, UV);
+
+	vec2 pixel = TEXTURE_PIXEL_SIZE * outline_size;
+
+	float left  = texture(TEXTURE, UV + vec2(-pixel.x, 0.0)).a;
+	float right = texture(TEXTURE, UV + vec2( pixel.x, 0.0)).a;
+	float up    = texture(TEXTURE, UV + vec2(0.0, -pixel.y)).a;
+	float down  = texture(TEXTURE, UV + vec2(0.0,  pixel.y)).a;
+
+	float edge = max(max(left, right), max(up, down));
+
+	if (color.a == 0.0 && edge > 0.0) {
+		COLOR = outline_color;
+	} else {
+		COLOR = color;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cmoey"]
+shader = SubResource("Shader_fnnr0")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 0.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_ujl42"]
 atlas = ExtResource("1_ujl42")
 region = Rect2(128, 32, 32, 32)
@@ -270,8 +300,22 @@ animations = [{
 "speed": 4.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_28l5i"]
+size = Vector2(19, 28)
+
 [node name="Doctor" type="AnimatedSprite2D" unique_id=1854216776 groups=["DR"]]
+material = SubResource("ShaderMaterial_cmoey")
 sprite_frames = SubResource("SpriteFrames_8cerb")
-animation = &"yellow"
+animation = &"red"
 autoplay = "default"
 script = ExtResource("2_fnnr0")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1507955915]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1580618853]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_28l5i")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

@@ -2,12 +2,16 @@ extends AnimatedSprite2D
 
 @onready var level_changers = get_tree().current_scene.get_node("LevelChangers").get_children()
 
+@onready var arrow_scene := preload("res://Scenes/arrow.tscn")
+var arrow: Node2D = null
+
 var level := 0
 var going := false
 var color := ""
 
 func _ready() -> void:
 	level = int(String(get_parent().get_parent().name)[-1])
+	
 	
 func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> void:
 	going = true
@@ -81,6 +85,7 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 			flip_h = true   # facing left
 	
 	play("default")
+	going = false
 	if first_pos and second_pos:
 		color = first_pos.color
 		play(color)
@@ -97,7 +102,7 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 		elif second_pos.name.begins_with("Doctor"):
 			second_pos.place_herb(color)
 
-		going = false
+		
 	
 	
 func use_stairs(changer):
@@ -178,3 +183,56 @@ func get_closest_progress(path: Path2D, pos: Vector2) -> float:
 	
 	return closest_ratio
 	
+
+func _on_area_2d_mouse_entered() -> void:
+	if not going:
+		(material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
+		get_tree().current_scene.hover_count += 1
+		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+
+
+func _on_area_2d_mouse_exited() -> void:
+	(material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
+	get_tree().current_scene.hover_count -= 1
+	
+	if get_tree().current_scene.hover_count <= 0:
+		get_tree().current_scene.hover_count = 0
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+
+func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if arrow == null and not going:
+			get_viewport().set_input_as_handled()
+			arrow = arrow_scene.instantiate()
+			add_child(arrow)
+			arrow.z_index = 100
+			arrow.start_location = global_position
+			
+func _input(event):
+	if event is InputEventMouseButton \
+	and event.button_index == MOUSE_BUTTON_LEFT \
+	and !event.pressed:
+		if arrow:
+			arrow.queue_free()
+			arrow = null
+			await get_tree().process_frame
+			get_tree().current_scene.garden = null
+			var mouse_level = get_level_from_mouse(get_global_mouse_position())
+			var mouse_location = Vector2.ZERO
+			if mouse_level == 3:
+				mouse_location = Vector2(get_global_mouse_position().x, 200)
+			elif mouse_level == 2:
+				mouse_location = Vector2(get_global_mouse_position().x, 350)
+			else:
+				mouse_location = Vector2(get_global_mouse_position().x, 520)
+
+			move_here(mouse_location, mouse_level)
+			
+func get_level_from_mouse(pos: Vector2) -> int:
+	if pos.y < 250:
+		return 3
+	elif pos.y < 400:
+		return 2
+	else:
+		return 1

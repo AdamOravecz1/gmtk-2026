@@ -52,9 +52,10 @@ texture = ExtResource("1_dcuu4")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1268237241]
 visible = false
+position = Vector2(-6, 0)
 sprite_frames = SubResource("SpriteFrames_p58rp")
 autoplay = "default"
-frame_progress = 0.13157457
+frame_progress = 0.059784595
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1644374322]
 
