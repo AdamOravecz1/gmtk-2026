@@ -9,8 +9,11 @@ var color := ""
 func _ready() -> void:
 	level = int(String(get_parent().get_parent().name)[-1])
 
-func move_here(cord: Vector2, lv: int) -> void:
+func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> void:
 	going = true
+	if first_pos:
+		first_pos.get_node("Area2D/CollisionShape2D").disabled = true
+	
 	var path_follow = get_parent()
 
 	# Get to the correct level first
@@ -77,6 +80,20 @@ func move_here(cord: Vector2, lv: int) -> void:
 		elif global_position.x < old_x:
 			flip_h = true   # facing left
 	
+	play("default")
+	if first_pos and second_pos:
+		
+		color = first_pos.color
+		play(color)
+		first_pos.harvest()
+		first_pos.full = false
+		first_pos.color = ""
+		first_pos.get_node("Area2D/CollisionShape2D").disabled = false
+		move_here(second_pos.global_position, second_pos.level, null, second_pos)
+		
+	if not first_pos and second_pos:
+		second_pos.cure()
+
 	going = false
 	
 	

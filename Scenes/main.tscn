@@ -105,28 +105,34 @@ texture = ExtResource("2_bo1nx")
 
 [node name="Garden" parent="." unique_id=1075370277 instance=ExtResource("5_kry3j")]
 position = Vector2(747, 340)
+level = 2
 
-[node name="House" parent="." unique_id=822289628 instance=ExtResource("5_21xkr")]
+[node name="Houses" type="Control" parent="." unique_id=1353908768]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="House" parent="Houses" unique_id=822289628 instance=ExtResource("5_21xkr")]
 position = Vector2(289, 500)
 level = 1
 
-[node name="House2" parent="." unique_id=1933845190 instance=ExtResource("5_21xkr")]
+[node name="House2" parent="Houses" unique_id=1933845190 instance=ExtResource("5_21xkr")]
 position = Vector2(891, 345)
 level = 2
 
-[node name="House3" parent="." unique_id=756952210 instance=ExtResource("5_21xkr")]
+[node name="House3" parent="Houses" unique_id=756952210 instance=ExtResource("5_21xkr")]
 position = Vector2(439, 180)
 level = 3
 
-[node name="House4" parent="." unique_id=519198223 instance=ExtResource("5_21xkr")]
+[node name="House4" parent="Houses" unique_id=519198223 instance=ExtResource("5_21xkr")]
 position = Vector2(170, 340)
 level = 2
 
-[node name="House5" parent="." unique_id=1924347348 instance=ExtResource("5_21xkr")]
+[node name="House5" parent="Houses" unique_id=1924347348 instance=ExtResource("5_21xkr")]
 position = Vector2(1048, 500)
 level = 1
 
-[node name="House6" parent="." unique_id=358843777 instance=ExtResource("5_21xkr")]
+[node name="House6" parent="Houses" unique_id=358843777 instance=ExtResource("5_21xkr")]
 position = Vector2(908, 180)
 level = 3
 
@@ -195,3 +201,10 @@ position = Vector2(336, 228)
 
 [node name="Down4" type="Node2D" parent="LevelChangers" unique_id=123090809]
 position = Vector2(1039, 228)
+
+[node name="Timer" type="Timer" parent="." unique_id=2073893536]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

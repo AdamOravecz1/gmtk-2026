@@ -1,5 +1,10 @@
 extends Node2D
 
+@export var level := 0
+
+@onready var arrow_scene := preload("res://Scenes/arrow.tscn")
+var arrow: Node2D = null
+
 @onready var herb_selector: Sprite2D = $HerbSelector
 @onready var herb: Sprite2D = $Herb
 @onready var timer: Timer = $Timer
@@ -26,14 +31,31 @@ func _process(delta):
 		
 		time.text = "%02d.%d" % [seconds, milliseconds]
 
-func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+func _input(event):
+	if event is InputEventMouseButton \
+	and event.button_index == MOUSE_BUTTON_LEFT \
+	and !event.pressed:
+		if arrow:
+			arrow.queue_free()
+			arrow = null
+			await get_tree().process_frame
+			get_tree().current_scene.garden = null
+
+func _on_area_2d_input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if full and arrow == null:
+			arrow = arrow_scene.instantiate()
+			add_child(arrow)
+			arrow.z_index = 100
+			arrow.start_location = global_position
+			get_tree().current_scene.garden = self
+
+		else:
+
 			$Area2D/CollisionShape2D.disabled = true
-			print("garden")
 			herb_selector.visible = true
 			var tween = get_tree().create_tween()
-			tween.tween_property(herb_selector, "scale", Vector2(1, 1), 0.2)
+			tween.tween_property(herb_selector, "scale", Vector2.ONE, 0.2)
 			
 
 
@@ -112,7 +134,6 @@ func _on_bg_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> vo
 	await get_tree().process_frame
 	if event is InputEventMouseButton and not herb.visible:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			print("huh")
 			close_selector()
 			$Area2D/CollisionShape2D.disabled = false
 
@@ -125,9 +146,17 @@ func start_timer():
 func _on_timer_timeout() -> void:
 	if herb.frame < 3:
 		herb.frame += 1
-		timer.start()
-	else:
+	if herb.frame == 3:
 		full = true
 		time.visible = false
 		running = false
+		$Area2D/CollisionShape2D.disabled = false
+	else:
+		timer.start()
 		
+		
+	
+func harvest():
+	herb.frame = 0
+	herb.visible = false
+	color = ""
