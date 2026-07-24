@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dy4j81122cq3g"]
+
+[ext_resource type="Texture2D" uid="uid://iiuat643kjrx" path="res://Sprites/DoctorHouse.png" id="1_dcuu4"]
+[ext_resource type="Script" uid="uid://dv3nump5jy62e" path="res://Scenes/doctor_house.gd" id="1_h1giv"]
+[ext_resource type="Texture2D" uid="uid://s5clcujampbf" path="res://Sprites/Bubbles.png" id="2_h1giv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a0ejy"]
+atlas = ExtResource("2_h1giv")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w7ssc"]
+atlas = ExtResource("2_h1giv")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eb4ra"]
+atlas = ExtResource("2_h1giv")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3mg1"]
+atlas = ExtResource("2_h1giv")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p58rp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a0ejy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w7ssc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eb4ra")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y3mg1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7ug6d"]
+size = Vector2(99, 89)
+
+[node name="DoctorHouse" type="Node2D" unique_id=1005722655]
+script = ExtResource("1_h1giv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=47130658]
+texture = ExtResource("1_dcuu4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1268237241]
+visible = false
+sprite_frames = SubResource("SpriteFrames_p58rp")
+autoplay = "default"
+frame_progress = 0.46065268
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1644374322]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=730796488]
+position = Vector2(-0.5, 13.5)
+shape = SubResource("RectangleShape2D_7ug6d")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

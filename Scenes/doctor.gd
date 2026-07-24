@@ -8,7 +8,7 @@ var color := ""
 
 func _ready() -> void:
 	level = int(String(get_parent().get_parent().name)[-1])
-
+	
 func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> void:
 	going = true
 	if first_pos:
@@ -36,7 +36,7 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 			if y_difference > 10:
 				continue
 
-			var d = cord.distance_to(changer.global_position)
+			var d = global_position.distance_to(changer.global_position) + changer.global_position.distance_to(cord) * 0.5
 
 			if d < closest_distance:
 				closest_distance = d
@@ -45,7 +45,7 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 		if closest == null:
 			push_error("No suitable level changer found!")
 			return
-		print(closest)
+
 		
 		# Move to the level changer
 		var step := 0.001
@@ -82,7 +82,6 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 	
 	play("default")
 	if first_pos and second_pos:
-		
 		color = first_pos.color
 		play(color)
 		first_pos.harvest()
@@ -90,11 +89,15 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 		first_pos.color = ""
 		first_pos.get_node("Area2D/CollisionShape2D").disabled = false
 		move_here(second_pos.global_position, second_pos.level, null, second_pos)
+			
 		
 	if not first_pos and second_pos:
-		second_pos.cure()
+		if second_pos.name.begins_with("House"):
+			second_pos.cure()
+		elif second_pos.name.begins_with("Doctor"):
+			second_pos.place_herb(color)
 
-	going = false
+		going = false
 	
 	
 func use_stairs(changer):
@@ -141,7 +144,7 @@ func use_stairs(changer):
 	# Switch to the new level path
 	var new_level_number = level
 	var new_level_path = get_tree().current_scene.get_node("Level" + str(new_level_number))
-	print(new_level_path)
+
 	
 	var new_follow = PathFollow2D.new()
 	new_follow.rotates = false
@@ -153,7 +156,7 @@ func use_stairs(changer):
 	new_follow.add_child(self)
 
 	new_follow.progress_ratio = get_closest_progress(new_level_path, old_position)
-	print(new_follow.progress_ratio)
+
 	
 func get_closest_progress(path: Path2D, pos: Vector2) -> float:
 	var closest_ratio := 0.0

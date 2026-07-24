@@ -36,6 +36,7 @@ func find_closest_dr(house):
 	
 	if closest:
 		closest.move_here(garden.global_position, garden.level, garden, house)
+		print("herevee")
 
 
 func _on_timer_timeout() -> void:
