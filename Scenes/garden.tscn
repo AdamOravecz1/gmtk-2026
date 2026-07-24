@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://baxrsx7nbm708" path="res://Sprites/Garden.png" id="2_mlwpc"]
 [ext_resource type="Texture2D" uid="uid://u1y3byclgexk" path="res://Sprites/HerbSelector.png" id="4_pbfy5"]
 [ext_resource type="FontFile" uid="uid://dhw8iuiik1b23" path="res://PixelOperator.ttf" id="5_jh4tr"]
+[ext_resource type="Texture2D" uid="uid://bi66vuubsle0d" path="res://Sprites/Symbols.png" id="6_8d8dg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pbfy5"]
 size = Vector2(104, 68)
@@ -41,6 +42,7 @@ shape = SubResource("RectangleShape2D_pbfy5")
 
 [node name="HerbSelector" type="Sprite2D" parent="." unique_id=784587688]
 visible = false
+z_index = 100
 position = Vector2(0, 25)
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("4_pbfy5")
@@ -74,13 +76,20 @@ one_shot = true
 
 [node name="Time" type="Label" parent="." unique_id=1825058321]
 visible = false
-offset_left = 16.0
-offset_top = 35.0
-offset_right = 56.0
-offset_bottom = 58.0
+offset_left = 11.0
+offset_top = 3.0
+offset_right = 51.0
+offset_bottom = 26.0
 theme_override_fonts/font = ExtResource("5_jh4tr")
 theme_override_font_sizes/font_size = 8
 text = "00:0"
+
+[node name="Symbols" type="Sprite2D" parent="." unique_id=614647808]
+visible = false
+position = Vector2(48, 3)
+texture = ExtResource("6_8d8dg")
+hframes = 3
+vframes = 3
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

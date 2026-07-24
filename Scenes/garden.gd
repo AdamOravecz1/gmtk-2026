@@ -9,6 +9,7 @@ var arrow: Node2D = null
 @onready var herb: Sprite2D = $Herb
 @onready var timer: Timer = $Timer
 @onready var time: Label = $Time
+@onready var symbols: Sprite2D = $Symbols
 
 var full := false
 var color := ""
@@ -102,7 +103,10 @@ func _on_red_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> v
 			get_viewport().set_input_as_handled()
 			color = "red"
 			herb.visible = true
-			herb.modulate = Color(0.631, 0.137, 0.137, 1.0)
+			symbols.visible = true
+			symbols.frame = 1
+			herb.modulate = get_tree().current_scene.color_lookup["red"]
+			symbols.modulate = get_tree().current_scene.color_lookup["red"]
 			timer.start()
 			start_timer()
 			close_selector()
@@ -114,7 +118,10 @@ func _on_blue_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> 
 			get_viewport().set_input_as_handled()
 			color = "blue"
 			herb.visible = true
-			herb.modulate = Color(0.341, 0.341, 0.71, 1.0)
+			symbols.visible = true
+			symbols.frame = 0
+			herb.modulate = get_tree().current_scene.color_lookup["blue"]
+			symbols.modulate = get_tree().current_scene.color_lookup["blue"]
 			timer.start()
 			start_timer()
 			close_selector()
@@ -125,7 +132,10 @@ func _on_yellow_input_event(viewport: Node, event: InputEvent, shape_idx: int) -
 			get_viewport().set_input_as_handled()
 			color = "yellow"
 			herb.visible = true
-			herb.modulate = Color(0.831, 0.831, 0.349, 1.0)
+			symbols.visible = true
+			symbols.frame = 2
+			herb.modulate = get_tree().current_scene.color_lookup["yellow"]
+			symbols.modulate = get_tree().current_scene.color_lookup["yellow"]
 			timer.start()
 			start_timer()
 			close_selector()
@@ -159,4 +169,5 @@ func _on_timer_timeout() -> void:
 func harvest():
 	herb.frame = 0
 	herb.visible = false
+	symbols.visible = false
 	color = ""

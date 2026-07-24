@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cn0gf8807ibnf" path="res://Sprites/House1.png" id="1_n87ef"]
 [ext_resource type="Texture2D" uid="uid://h2qgmjl3xwko" path="res://Sprites/Smoke.png" id="2_3jr7h"]
 [ext_resource type="FontFile" uid="uid://dhw8iuiik1b23" path="res://PixelOperator.ttf" id="4_iqtyj"]
+[ext_resource type="Texture2D" uid="uid://bi66vuubsle0d" path="res://Sprites/Symbols.png" id="5_xi0mm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iqtyj"]
 atlas = ExtResource("2_3jr7h")
@@ -51,9 +52,10 @@ script = ExtResource("1_3jr7h")
 texture = ExtResource("1_n87ef")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1377155784]
+visible = false
 sprite_frames = SubResource("SpriteFrames_gau5j")
 autoplay = "default"
-frame_progress = 0.008784918
+frame_progress = 0.919508
 
 [node name="Area2D" type="Area2D" parent="." unique_id=332186678]
 
@@ -64,11 +66,17 @@ shape = SubResource("RectangleShape2D_7ug6d")
 [node name="Time" type="Label" parent="." unique_id=2124042807]
 visible = false
 offset_left = -27.0
-offset_top = -22.0
+offset_top = -12.0
 offset_right = 25.0
-offset_bottom = 1.0
+offset_bottom = 11.0
 theme_override_fonts/font = ExtResource("4_iqtyj")
 text = "00:0"
+
+[node name="Symbols" type="Sprite2D" parent="." unique_id=616746675]
+visible = false
+texture = ExtResource("5_xi0mm")
+hframes = 3
+vframes = 3
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://iiuat643kjrx" path="res://Sprites/DoctorHouse.png" id="1_dcuu4"]
 [ext_resource type="Script" uid="uid://dv3nump5jy62e" path="res://Scenes/doctor_house.gd" id="1_h1giv"]
 [ext_resource type="Texture2D" uid="uid://s5clcujampbf" path="res://Sprites/Bubbles.png" id="2_h1giv"]
+[ext_resource type="Texture2D" uid="uid://bi66vuubsle0d" path="res://Sprites/Symbols.png" id="4_h1giv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a0ejy"]
 atlas = ExtResource("2_h1giv")
@@ -53,13 +54,20 @@ texture = ExtResource("1_dcuu4")
 visible = false
 sprite_frames = SubResource("SpriteFrames_p58rp")
 autoplay = "default"
-frame_progress = 0.46065268
+frame_progress = 0.13157457
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1644374322]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=730796488]
 position = Vector2(-0.5, 13.5)
 shape = SubResource("RectangleShape2D_7ug6d")
+
+[node name="Symbols" type="Sprite2D" parent="." unique_id=1550699598]
+visible = false
+position = Vector2(29, 0)
+texture = ExtResource("4_h1giv")
+hframes = 3
+vframes = 3
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

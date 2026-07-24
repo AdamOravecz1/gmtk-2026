@@ -8,6 +8,17 @@ var arrow: Node2D = null
 var color = ""
 var full := false
 
+const color_symbol := {
+	"red": 1,
+	"blue": 0,
+	"yellow": 2,
+	"green": 5,
+	"orange": 3,
+	"purple": 4,
+	"white": 6
+}
+
+
 func _input(event):
 	if event is InputEventMouseButton \
 	and event.button_index == MOUSE_BUTTON_LEFT \
@@ -28,7 +39,7 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 			get_tree().current_scene.garden = self
 		elif get_tree().current_scene.garden and not event.pressed:
 			if can_mix(get_tree().current_scene.garden.color):
-				get_tree().current_scene.find_closest_dr(self)
+				get_tree().current_scene.find_closest_dr(get_tree().current_scene.garden, self)
 
 
 func _on_area_2d_mouse_entered() -> void:
@@ -48,7 +59,9 @@ func place_herb(c):
 	full = true
 	$AnimatedSprite2D.visible = true
 	$AnimatedSprite2D.modulate = get_tree().current_scene.color_lookup[color]
-
+	$Symbols.visible = true
+	$Symbols.modulate = get_tree().current_scene.color_lookup[color]
+	$Symbols.frame = color_symbol[color]
 
 func mix_colors(a: String, b: String) -> String:
 	if a == b:
@@ -118,3 +131,4 @@ func harvest():
 	color = ""
 	full = false
 	$AnimatedSprite2D.visible = false
+	$Symbols.visible = false

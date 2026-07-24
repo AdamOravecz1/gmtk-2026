@@ -9,6 +9,16 @@ var countdown_time := 30.0 # seconds
 var start_time: int
 var running := false
 
+const color_symbol := {
+	"red": 1,
+	"blue": 0,
+	"yellow": 2,
+	"green": 5,
+	"orange": 3,
+	"purple": 4,
+	"white": 6
+}
+
 
 func _process(delta):
 	if running:
@@ -39,17 +49,29 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 			
 			if not event.pressed and color and get_tree().current_scene.garden:
 				if color == get_tree().current_scene.garden.color:
-					get_tree().current_scene.find_closest_dr(self)
+					get_tree().current_scene.find_closest_dr(get_tree().current_scene.garden, self)
 
 func infect(c):
 	color = c
+	if color in ["red", "yellow", "blue"]:
+		countdown_time = 30
+	elif color in ["orange", "green", "purple"]:
+		countdown_time = 45
+	else:
+		countdown_time = 60
+	$AnimatedSprite2D.visible = true
+	$Symbols.visible = true
+	$Symbols.frame = color_symbol[color]
 	$AnimatedSprite2D.modulate = get_tree().current_scene.color_lookup[color]
+	$Symbols.modulate = get_tree().current_scene.color_lookup[color]
 	time.visible = true
 	start_time = Time.get_ticks_msec()
 	running = true
 	
 func cure():
 	color = ""
+	$AnimatedSprite2D.visible = false
+	$Symbols.visible = false
 	$AnimatedSprite2D.modulate = Color(1.0, 1.0, 1.0, 1.0)
 	get_tree().current_scene.chosen_houses.erase(self)
 	time.visible = false
