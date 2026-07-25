@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bicrq6sqq3qgx"]
+
+[ext_resource type="Script" uid="uid://cp7atr4ugqpbt" path="res://Scenes/pointing_arrow.gd" id="1_4l5yy"]
+[ext_resource type="Texture2D" uid="uid://h27yihjtyroc" path="res://Sprites/PointingArrow.png" id="1_u8au2"]
+
+[node name="PointingArrow" type="Node2D" unique_id=2058518313]
+script = ExtResource("1_4l5yy")
+
+[node name="PointingArrow" type="Sprite2D" parent="." unique_id=1282854172]
+scale = Vector2(2, 2)
+texture = ExtResource("1_u8au2")

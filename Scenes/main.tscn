@@ -14,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://bqshdfftbvsh3" path="res://Sprites/PauseIcon.png" id="12_6iyac"]
 [ext_resource type="Texture2D" uid="uid://cfhhrms5nlg6e" path="res://Sprites/Recipe.png" id="12_fdnlq"]
 [ext_resource type="AudioStream" uid="uid://dxkcrplox514w" path="res://Sounds/freesound_community-suspiro-tristeza-46553.mp3" id="14_jkdf5"]
+[ext_resource type="PackedScene" uid="uid://8nt2mfev8ht4" path="res://Scenes/talking_dr.tscn" id="15_wsu2k"]
+[ext_resource type="PackedScene" uid="uid://bicrq6sqq3qgx" path="res://Scenes/pointing_arrow.tscn" id="16_k12tt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jjvhh"]
 texture = ExtResource("1_jjgbg")
@@ -191,6 +193,7 @@ level = 1
 
 [node name="House2" parent="Houses" unique_id=1933845190 instance=ExtResource("5_21xkr")]
 position = Vector2(891, 345)
+clickable = true
 level = 2
 
 [node name="House3" parent="Houses" unique_id=756952210 instance=ExtResource("5_21xkr")]
@@ -234,8 +237,8 @@ rotates = false
 material = SubResource("ShaderMaterial_hptm8")
 
 [node name="PathFollow2D2" type="PathFollow2D" parent="Level2" unique_id=1194148934]
-position = Vector2(967.9739, 5)
-progress = 974.63965
+position = Vector2(434.50836, 5)
+progress = 439.9978
 rotates = false
 
 [node name="Doctor3" parent="Level2/PathFollow2D2" unique_id=1954553856 instance=ExtResource("3_8gbba")]
@@ -304,7 +307,6 @@ position = Vector2(1039, 228)
 [node name="Timer" type="Timer" parent="." unique_id=2073893536]
 wait_time = 5.0
 one_shot = true
-autostart = true
 
 [node name="Moon" type="Sprite2D" parent="." unique_id=420962235]
 modulate = Color(1.1638972, 1.1638972, 1.1638972, 1)
@@ -890,6 +892,17 @@ flat = true
 process_mode = 3
 stream = ExtResource("14_jkdf5")
 volume_db = 10.0
+
+[node name="TalkingDr" parent="." unique_id=439100258 groups=["TalkingDR"] instance=ExtResource("15_wsu2k")]
+position = Vector2(108, 529)
+
+[node name="PointingArrow" parent="." unique_id=2058518313 instance=ExtResource("16_k12tt")]
+visible = false
+
+[node name="Arrows" type="Control" parent="." unique_id=426010193]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="CanvasLayer/ColorRect2/Replay" to="." method="_on_replay_pressed"]

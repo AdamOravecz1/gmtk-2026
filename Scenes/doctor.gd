@@ -1,8 +1,12 @@
 extends AnimatedSprite2D
 
+@export var clickable := false
+
 @onready var level_changers = get_tree().current_scene.get_node("LevelChangers").get_children()
 
 @onready var arrow_scene := preload("res://Scenes/arrow.tscn")
+
+
 var arrow: Node2D = null
 
 var level := 0
@@ -79,9 +83,10 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 		step = -step
 	
 	while global_position.distance_to(cord) > 50:
-		if get_tree().paused:
-			await get_tree().process_frame
-			continue
+		if get_tree():
+			if get_tree().paused:
+				await get_tree().process_frame
+				continue
 		var old_x = global_position.x
 		path_follow.progress_ratio += step
 		await get_tree().process_frame
@@ -192,7 +197,7 @@ func get_closest_progress(path: Path2D, pos: Vector2) -> float:
 	
 
 func _on_area_2d_mouse_entered() -> void:
-	if not going:
+	if not going and clickable:
 		get_tree().current_scene.mouse_on_dr = true
 		(material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
 		get_tree().current_scene.hover_count += 1
@@ -211,7 +216,7 @@ func _on_area_2d_mouse_exited() -> void:
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if arrow == null and not going:
+		if arrow == null and not going and clickable:
 			get_tree().current_scene.dragging_dr = true
 			
 			get_viewport().set_input_as_handled()

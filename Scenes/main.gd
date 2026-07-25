@@ -1,5 +1,7 @@
 extends Control
 
+var in_tutorial = true
+
 var score := 0
 
 var hover_count := 0
@@ -9,10 +11,15 @@ var dragging_dr := false
 
 var chosen_houses: Array = []
 
+var planted_tutorial = ""
+
 var paused := false
 
 @onready var music_slider: HSlider = $CanvasLayer/ColorRect/MusicSlider
 @onready var sfx_slider: HSlider = $CanvasLayer/ColorRect/SFXSlider
+@onready var pointing_arrow: Node2D = $PointingArrow
+
+@onready var arrow_scene := preload("res://Scenes/pointing_arrow.tscn")
 
 const color_lookup := {
 	"red": Color(0.631, 0.137, 0.137, 1.0),
@@ -37,7 +44,7 @@ const colors := [
 
 var garden = null
 
-func _ready():
+func _ready() -> void:
 	var music_bus = AudioServer.get_bus_index("Music")
 	var sfx_bus = AudioServer.get_bus_index("SFX")
 
@@ -153,3 +160,85 @@ func end():
 func _on_replay_pressed() -> void:
 	get_tree().paused = false
 	get_tree().reload_current_scene()
+	
+func delete_arrows():
+	for i in $Arrows.get_children():
+		i.queue_free()
+
+func tutorial1():
+	var arrow = arrow_scene.instantiate()
+	$Arrows.add_child(arrow)
+	arrow.global_position = $Houses/House2.global_position - Vector2(0, 80)
+	$Houses/House2.infect("red")
+	
+	
+func tutorial2():
+	var arrow = arrow_scene.instantiate()
+	$Arrows.add_child(arrow)
+	arrow.global_position = $Garden3.global_position - Vector2(0, 80)
+	$Garden3.clickable = true
+
+func tutorial3():
+	var arrow = arrow_scene.instantiate()
+	$Arrows.add_child(arrow)
+	arrow.global_position = $Garden3.global_position - Vector2(0, 80)
+	var arrow2 = arrow_scene.instantiate()
+	$Arrows.add_child(arrow2)
+	arrow2.global_position = $Houses/House2.global_position - Vector2(0, 80)
+
+func tutorial4():
+	$Houses/House2.clickable = false
+	$Houses/House6.clickable = true
+	$Garden2.clickable = true
+	$Garden3.clickable = true
+	var arrow = arrow_scene.instantiate()
+	$Arrows.add_child(arrow)
+	arrow.global_position = $Garden3.global_position - Vector2(0, 80)
+	var arrow2 = arrow_scene.instantiate()
+	$Arrows.add_child(arrow2)
+	arrow2.global_position = $Garden2.global_position - Vector2(0, 80)
+	var arrow3 = arrow_scene.instantiate()
+	$Arrows.add_child(arrow3)
+	arrow3.global_position = $Houses/House6.global_position - Vector2(0, 80)
+	if $Houses/House6.color == "":
+		$Houses/House6.infect("orange")
+		
+func tutorial5():
+	$DoctorHouse2.clickable = true
+	var arrow = arrow_scene.instantiate()
+	$Arrows.add_child(arrow)
+	arrow.global_position = $Garden3.global_position - Vector2(0, 80)
+	var arrow2 = arrow_scene.instantiate()
+	$Arrows.add_child(arrow2)
+	arrow2.global_position = $Garden2.global_position - Vector2(0, 80)
+	var arrow3 = arrow_scene.instantiate()
+	$Arrows.add_child(arrow3)
+	arrow3.global_position = $DoctorHouse2.global_position - Vector2(0, 80)
+
+func tutorial6():
+	$Garden3.clickable = false
+	$Garden2.clickable = false
+	var arrow2 = arrow_scene.instantiate()
+	$Arrows.add_child(arrow2)
+	arrow2.global_position = $Houses/House6.global_position - Vector2(0, 80)
+	var arrow3 = arrow_scene.instantiate()
+	$Arrows.add_child(arrow3)
+	arrow3.global_position = $DoctorHouse2.global_position - Vector2(0, 80)
+	
+func finish_tutorial():
+	in_tutorial = false
+	$Timer.start()
+	for i in $Houses.get_children():
+		i.clickable = true
+		
+	$DoctorHouse.clickable = true
+	$DoctorHouse2.clickable = true
+	$DoctorHouse3.clickable = true
+	
+	$Garden.clickable = true
+	$Garden2.clickable = true
+	$Garden3.clickable = true
+
+	for i in get_tree().get_nodes_in_group("DR"):
+		i.clickable = true
+	

@@ -2,6 +2,11 @@ extends Node2D
 
 @onready var time: Label = $Time
 
+@onready var talking_dr := get_tree().get_first_node_in_group("TalkingDR")
+
+
+@export var clickable := false
+
 @export var color := ""
 @export var level := 0
 
@@ -30,6 +35,7 @@ func _process(delta):
 		if remaining <= 0:
 			remaining = 0
 			running = false
+			
 			get_tree().current_scene.end()
 		
 		var seconds = int(remaining)
@@ -38,7 +44,7 @@ func _process(delta):
 		time.text = "%02d.%d" % [seconds, milliseconds]
 
 func _on_area_2d_mouse_entered() -> void:
-	if get_tree().current_scene.garden:
+	if get_tree().current_scene.garden and clickable:
 		($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
 		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 		get_tree().current_scene.hover_count += 1
@@ -60,6 +66,9 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 			if not event.pressed and color and get_tree().current_scene.garden:
 				if color == get_tree().current_scene.garden.color:
 					get_tree().current_scene.find_closest_dr(get_tree().current_scene.garden, self)
+					if get_tree().current_scene.in_tutorial:
+						if talking_dr.line_index == 3:
+							talking_dr.next()
 
 func infect(c):
 	$Cough.pitch_scale = randf_range(.8, 1.1)
@@ -76,17 +85,24 @@ func infect(c):
 	$Symbols.frame = color_symbol[color]
 	$AnimatedSprite2D.modulate = get_tree().current_scene.color_lookup[color]
 	$Symbols.modulate = get_tree().current_scene.color_lookup[color]
-	time.visible = true
-	start_time = Time.get_ticks_msec()
-	running = true
+	if not get_tree().current_scene.in_tutorial:
+		time.visible = true
+		start_time = Time.get_ticks_msec()
+		running = true
 	
 func cure():
-	if color in ["red", "yellow", "blue"]:
-		get_tree().current_scene.add_point(1)
-	elif color in ["orange", "green", "purple"]:
-		get_tree().current_scene.add_point(2)
-	else:
-		get_tree().current_scene.add_point(3)
+	if get_tree().current_scene.in_tutorial:
+		if talking_dr.line_index == 4:
+			talking_dr.next()
+		if talking_dr.line_index == 8:
+			talking_dr.next()
+	if not get_tree().current_scene.in_tutorial:
+		if color in ["red", "yellow", "blue"]:
+			get_tree().current_scene.add_point(1)
+		elif color in ["orange", "green", "purple"]:
+			get_tree().current_scene.add_point(2)
+		else:
+			get_tree().current_scene.add_point(3)
 
 	$Cure.pitch_scale = randf_range(.8, 1.1)
 	$Cure.play()
