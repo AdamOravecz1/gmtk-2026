@@ -19,6 +19,8 @@ const color_symbol := {
 	"white": 6
 }
 
+func _ready():
+	$Sprite2D.material = $Sprite2D.material.duplicate()
 
 func _process(delta):
 	if running:
@@ -35,19 +37,22 @@ func _process(delta):
 		time.text = "%02d.%d" % [seconds, milliseconds]
 
 func _on_area_2d_mouse_entered() -> void:
-	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-	get_tree().current_scene.hover_count += 1
+	if get_tree().current_scene.garden:
+		($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
+		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+		get_tree().current_scene.hover_count += 1
 
 
 func _on_area_2d_mouse_exited() -> void:
 	get_tree().current_scene.hover_count -= 1
+	($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
 	if get_tree().current_scene.hover_count <= 0:
 		get_tree().current_scene.hover_count = 0
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and get_tree().current_scene.hover_count != 2:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 
 			
@@ -56,6 +61,8 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 					get_tree().current_scene.find_closest_dr(get_tree().current_scene.garden, self)
 
 func infect(c):
+	$Cough.pitch_scale = randf_range(.8, 1.1)
+	$Cough.play()
 	color = c
 	if color in ["red", "yellow", "blue"]:
 		countdown_time = 40
@@ -73,6 +80,8 @@ func infect(c):
 	running = true
 	
 func cure():
+	$Cure.pitch_scale = randf_range(.8, 1.1)
+	$Cure.play()
 	color = ""
 	$AnimatedSprite2D.visible = false
 	$Symbols.visible = false

@@ -5,6 +5,38 @@
 [ext_resource type="Texture2D" uid="uid://h2qgmjl3xwko" path="res://Sprites/Smoke.png" id="2_3jr7h"]
 [ext_resource type="FontFile" uid="uid://dhw8iuiik1b23" path="res://PixelOperator.ttf" id="4_iqtyj"]
 [ext_resource type="Texture2D" uid="uid://bi66vuubsle0d" path="res://Sprites/Symbols.png" id="5_xi0mm"]
+[ext_resource type="AudioStream" uid="uid://81tbvdy6p2s7" path="res://Sounds/freesound_community-man-coughing-cough-101979.wav" id="6_l3jqw"]
+[ext_resource type="AudioStream" uid="uid://cr0fibnaiwu41" path="res://Sounds/creativesoumen-huh-relief-322749.wav" id="7_gau5j"]
+
+[sub_resource type="Shader" id="Shader_xi0mm"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_size = 1.0;
+
+void fragment() {
+	vec4 color = texture(TEXTURE, UV);
+
+	vec2 pixel = TEXTURE_PIXEL_SIZE * outline_size;
+
+	float left  = texture(TEXTURE, UV + vec2(-pixel.x, 0.0)).a;
+	float right = texture(TEXTURE, UV + vec2( pixel.x, 0.0)).a;
+	float up    = texture(TEXTURE, UV + vec2(0.0, -pixel.y)).a;
+	float down  = texture(TEXTURE, UV + vec2(0.0,  pixel.y)).a;
+
+	float edge = max(max(left, right), max(up, down));
+
+	if (color.a == 0.0 && edge > 0.0) {
+		COLOR = outline_color;
+	} else {
+		COLOR = color;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bu6dc"]
+shader = SubResource("Shader_xi0mm")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iqtyj"]
 atlas = ExtResource("2_3jr7h")
@@ -49,13 +81,14 @@ size = Vector2(99, 89)
 script = ExtResource("1_3jr7h")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2044843123]
+material = SubResource("ShaderMaterial_bu6dc")
 texture = ExtResource("1_n87ef")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1377155784]
 visible = false
 sprite_frames = SubResource("SpriteFrames_gau5j")
 autoplay = "default"
-frame_progress = 0.919508
+frame_progress = 0.5362587
 
 [node name="Area2D" type="Area2D" parent="." unique_id=332186678]
 
@@ -77,6 +110,13 @@ visible = false
 texture = ExtResource("5_xi0mm")
 hframes = 3
 vframes = 3
+
+[node name="Cough" type="AudioStreamPlayer" parent="." unique_id=137808313]
+stream = ExtResource("6_l3jqw")
+pitch_scale = 1.28
+
+[node name="Cure" type="AudioStreamPlayer" parent="." unique_id=1986712572]
+stream = ExtResource("7_gau5j")
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

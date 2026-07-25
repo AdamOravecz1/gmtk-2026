@@ -10,6 +10,9 @@ var arrow: Node2D = null
 @onready var timer: Timer = $Timer
 @onready var time: Label = $Time
 @onready var symbols: Sprite2D = $Symbols
+@onready var garden: Sprite2D = $Garden
+
+var mouse_on_top := false
 
 var full := false
 var color := ""
@@ -18,7 +21,14 @@ var countdown_time := 12.0 # seconds
 var start_time: int
 var running := false
 
+func _ready():
+	garden.material = garden.material.duplicate()
+
 func _process(delta):
+	if get_tree().current_scene.mouse_on_dr:
+		disable_highlight()
+	elif mouse_on_top and not get_tree().current_scene.dragging_dr:
+		enable_higlight()
 	if running:
 		var elapsed = (Time.get_ticks_msec() - start_time) / 1000.0
 		var remaining = countdown_time - elapsed
@@ -43,7 +53,7 @@ func _input(event):
 			get_tree().current_scene.garden = null
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not get_tree().current_scene.mouse_on_dr:
 		if full and arrow == null:
 			arrow = arrow_scene.instantiate()
 			add_child(arrow)
@@ -61,15 +71,30 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 
 
 func _on_area_2d_mouse_entered() -> void:
-	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-	get_tree().current_scene.hover_count += 1
+	if not get_tree().current_scene.garden and not get_tree().current_scene.dragging_dr:
+		mouse_on_top = true
+		($Garden.material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
+		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+		get_tree().current_scene.hover_count += 1
 
 
 func _on_area_2d_mouse_exited() -> void:
+	await get_tree().process_frame
 	get_tree().current_scene.hover_count -= 1
+	($Garden.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
 	if get_tree().current_scene.hover_count <= 0:
+		mouse_on_top = false
 		get_tree().current_scene.hover_count = 0
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		
+func disable_highlight():
+	($Garden.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
+
+	
+func enable_higlight():
+	($Garden.material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
+	
+
 
 func close_selector():
 	herb_selector.scale = Vector2(0, 0)
@@ -155,6 +180,7 @@ func start_timer():
 	time.visible = true
 	start_time = Time.get_ticks_msec()
 	running = true
+	$Plant.play()
 
 
 func _on_timer_timeout() -> void:
@@ -171,6 +197,7 @@ func _on_timer_timeout() -> void:
 		
 	
 func harvest():
+	$Harvest.play()
 	herb.frame = 0
 	herb.visible = false
 	symbols.visible = false

@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://ve82pymwsfmb" path="res://Sprites/Moon.png" id="7_6bp64"]
 [ext_resource type="Texture2D" uid="uid://u868yryacxo0" path="res://Sprites/32Design.png" id="8_344ge"]
 [ext_resource type="Texture2D" uid="uid://cvyuo2ln271rs" path="res://Sprites/64Design.png" id="9_ynf5e"]
+[ext_resource type="AudioStream" uid="uid://dt87e7ytdksv6" path="res://Sounds/ApologiesToJSB.wav" id="10_hptm8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jjvhh"]
 texture = ExtResource("1_jjgbg")
@@ -163,16 +164,16 @@ position = Vector2(799, 500)
 level = 1
 
 [node name="Garden" parent="." unique_id=1075370277 instance=ExtResource("5_kry3j")]
-position = Vector2(747, 340)
-level = 2
-
-[node name="Garden2" parent="." unique_id=965176437 instance=ExtResource("5_kry3j")]
 position = Vector2(400, 500)
 level = 1
 
-[node name="Garden3" parent="." unique_id=1309220825 instance=ExtResource("5_kry3j")]
-position = Vector2(173, 180)
+[node name="Garden2" parent="." unique_id=998717877 instance=ExtResource("5_kry3j")]
+position = Vector2(176, 180)
 level = 3
+
+[node name="Garden3" parent="." unique_id=844336825 instance=ExtResource("5_kry3j")]
+position = Vector2(751, 340)
+level = 2
 
 [node name="Houses" type="Control" parent="." unique_id=1353908768]
 anchors_preset = 0
@@ -692,5 +693,9 @@ texture = ExtResource("9_ynf5e")
 hframes = 2
 vframes = 2
 frame = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2010481948]
+stream = ExtResource("10_hptm8")
+autoplay = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

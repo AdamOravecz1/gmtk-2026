@@ -2,6 +2,9 @@ extends Control
 
 var hover_count := 0
 
+var mouse_on_dr := false
+var dragging_dr := false
+
 var chosen_houses: Array = []
 
 const color_lookup := {

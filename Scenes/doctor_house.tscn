@@ -4,6 +4,38 @@
 [ext_resource type="Script" uid="uid://dv3nump5jy62e" path="res://Scenes/doctor_house.gd" id="1_h1giv"]
 [ext_resource type="Texture2D" uid="uid://s5clcujampbf" path="res://Sprites/Bubbles.png" id="2_h1giv"]
 [ext_resource type="Texture2D" uid="uid://bi66vuubsle0d" path="res://Sprites/Symbols.png" id="4_h1giv"]
+[ext_resource type="AudioStream" uid="uid://dkq38wt5h8kc4" path="res://Sounds/lazychillzone-cauldron-bubbling-2-232443.mp3" id="5_a0ejy"]
+[ext_resource type="AudioStream" uid="uid://dqi0kaxjohmlo" path="res://Sounds/applehillstudios-pouring-beverage-into-a-glass-1-544240.mp3" id="6_w7ssc"]
+
+[sub_resource type="Shader" id="Shader_fnnr0"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_size = 1.0;
+
+void fragment() {
+	vec4 color = texture(TEXTURE, UV);
+
+	vec2 pixel = TEXTURE_PIXEL_SIZE * outline_size;
+
+	float left  = texture(TEXTURE, UV + vec2(-pixel.x, 0.0)).a;
+	float right = texture(TEXTURE, UV + vec2( pixel.x, 0.0)).a;
+	float up    = texture(TEXTURE, UV + vec2(0.0, -pixel.y)).a;
+	float down  = texture(TEXTURE, UV + vec2(0.0,  pixel.y)).a;
+
+	float edge = max(max(left, right), max(up, down));
+
+	if (color.a == 0.0 && edge > 0.0) {
+		COLOR = outline_color;
+	} else {
+		COLOR = color;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h1giv"]
+shader = SubResource("Shader_fnnr0")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a0ejy"]
 atlas = ExtResource("2_h1giv")
@@ -48,6 +80,7 @@ size = Vector2(99, 89)
 script = ExtResource("1_h1giv")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=47130658]
+material = SubResource("ShaderMaterial_h1giv")
 texture = ExtResource("1_dcuu4")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1268237241]
@@ -55,7 +88,7 @@ visible = false
 position = Vector2(-6, 0)
 sprite_frames = SubResource("SpriteFrames_p58rp")
 autoplay = "default"
-frame_progress = 0.059784595
+frame_progress = 0.12529172
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1644374322]
 
@@ -69,6 +102,12 @@ position = Vector2(29, 0)
 texture = ExtResource("4_h1giv")
 hframes = 3
 vframes = 3
+
+[node name="Bubble" type="AudioStreamPlayer" parent="." unique_id=1131996077]
+stream = ExtResource("5_a0ejy")
+
+[node name="Pour" type="AudioStreamPlayer" parent="." unique_id=460611496]
+stream = ExtResource("6_w7ssc")
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

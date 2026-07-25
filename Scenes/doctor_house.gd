@@ -8,6 +8,8 @@ var arrow: Node2D = null
 var color = ""
 var full := false
 
+var mouse_on_top := false
+
 const color_symbol := {
 	"red": 1,
 	"blue": 0,
@@ -18,6 +20,14 @@ const color_symbol := {
 	"white": 6
 }
 
+func _ready():
+	$Sprite2D.material = $Sprite2D.material.duplicate()
+	
+func _process(delta: float) -> void:
+	if get_tree().current_scene.mouse_on_dr:
+		disable_highlight()
+	elif mouse_on_top and not get_tree().current_scene.dragging_dr:
+		enable_higlight()
 
 func _input(event):
 	if event is InputEventMouseButton \
@@ -30,7 +40,7 @@ func _input(event):
 			get_tree().current_scene.garden = null
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not get_tree().current_scene.mouse_on_dr:
 		if full and arrow == null and event.pressed:
 			arrow = arrow_scene.instantiate()
 			add_child(arrow)
@@ -43,15 +53,29 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 
 
 func _on_area_2d_mouse_entered() -> void:
-	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-	get_tree().current_scene.hover_count += 1
+	if get_tree().current_scene.garden or full and not get_tree().current_scene.dragging_dr:
+		mouse_on_top = true
+		($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
+		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+		get_tree().current_scene.hover_count += 1
 
 
 func _on_area_2d_mouse_exited() -> void:
 	get_tree().current_scene.hover_count -= 1
+	($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
 	if get_tree().current_scene.hover_count <= 0:
+		mouse_on_top = false
 		get_tree().current_scene.hover_count = 0
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		
+
+func disable_highlight():
+	($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
+
+	
+func enable_higlight():
+	($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
+
 
 
 func place_herb(c):
@@ -60,6 +84,7 @@ func place_herb(c):
 	else:
 		color = mix_colors(color, c)
 
+	$Bubble.play()
 	full = true
 	$AnimatedSprite2D.visible = true
 	$AnimatedSprite2D.modulate = get_tree().current_scene.color_lookup[color]
@@ -133,6 +158,7 @@ func can_mix(incoming_color: String) -> bool:
 
 func harvest():
 	color = ""
+	$Pour.play()
 	full = false
 	$AnimatedSprite2D.visible = false
 	$Symbols.visible = false

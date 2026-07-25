@@ -14,6 +14,7 @@ func _ready() -> void:
 	
 	
 func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> void:
+
 	going = true
 	if first_pos:
 		first_pos.get_node("Area2D/CollisionShape2D").disabled = true
@@ -186,6 +187,7 @@ func get_closest_progress(path: Path2D, pos: Vector2) -> float:
 
 func _on_area_2d_mouse_entered() -> void:
 	if not going:
+		get_tree().current_scene.mouse_on_dr = true
 		(material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
 		get_tree().current_scene.hover_count += 1
 		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
@@ -194,15 +196,18 @@ func _on_area_2d_mouse_entered() -> void:
 func _on_area_2d_mouse_exited() -> void:
 	(material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
 	get_tree().current_scene.hover_count -= 1
-	
+	get_tree().current_scene.mouse_on_dr = false
 	if get_tree().current_scene.hover_count <= 0:
 		get_tree().current_scene.hover_count = 0
+		
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if arrow == null and not going:
+			get_tree().current_scene.dragging_dr = true
+			
 			get_viewport().set_input_as_handled()
 			arrow = arrow_scene.instantiate()
 			add_child(arrow)
@@ -217,7 +222,7 @@ func _input(event):
 			arrow.queue_free()
 			arrow = null
 			await get_tree().process_frame
-			get_tree().current_scene.garden = null
+			get_tree().current_scene.dragging_dr = false
 			var mouse_level = get_level_from_mouse(get_global_mouse_position())
 			var mouse_location = Vector2.ZERO
 			if mouse_level == 3:
