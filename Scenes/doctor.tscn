@@ -304,6 +304,7 @@ animations = [{
 size = Vector2(19, 28)
 
 [node name="Doctor" type="AnimatedSprite2D" unique_id=1854216776 groups=["DR"]]
+process_mode = 1
 material = SubResource("ShaderMaterial_cmoey")
 sprite_frames = SubResource("SpriteFrames_8cerb")
 animation = &"red"

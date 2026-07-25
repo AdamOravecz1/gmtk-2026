@@ -89,7 +89,6 @@ func _on_area_2d_mouse_exited() -> void:
 		
 func disable_highlight():
 	($Garden.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
-
 	
 func enable_higlight():
 	($Garden.material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)

@@ -10,6 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://u868yryacxo0" path="res://Sprites/32Design.png" id="8_344ge"]
 [ext_resource type="Texture2D" uid="uid://cvyuo2ln271rs" path="res://Sprites/64Design.png" id="9_ynf5e"]
 [ext_resource type="AudioStream" uid="uid://dt87e7ytdksv6" path="res://Sounds/ApologiesToJSB.wav" id="10_hptm8"]
+[ext_resource type="FontFile" uid="uid://dhw8iuiik1b23" path="res://PixelOperator.ttf" id="11_d1ilt"]
+[ext_resource type="Texture2D" uid="uid://bqshdfftbvsh3" path="res://Sprites/PauseIcon.png" id="12_6iyac"]
+[ext_resource type="Texture2D" uid="uid://cfhhrms5nlg6e" path="res://Sprites/Recipe.png" id="12_fdnlq"]
+[ext_resource type="AudioStream" uid="uid://dxkcrplox514w" path="res://Sounds/freesound_community-suspiro-tristeza-46553.mp3" id="14_jkdf5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jjvhh"]
 texture = ExtResource("1_jjgbg")
@@ -123,6 +127,7 @@ _data = {
 point_count = 2
 
 [node name="Main" type="Control" unique_id=1527118056]
+process_mode = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -695,7 +700,200 @@ vframes = 2
 frame = 2
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2010481948]
+process_mode = 3
 stream = ExtResource("10_hptm8")
 autoplay = true
+bus = &"Music"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1161783920]
+
+[node name="Score" type="Label" parent="CanvasLayer" unique_id=1377035793]
+offset_left = 677.0
+offset_top = 581.0
+offset_right = 1149.0
+offset_bottom = 645.0
+theme_override_fonts/font = ExtResource("11_d1ilt")
+theme_override_font_sizes/font_size = 64
+text = "0"
+horizontal_alignment = 2
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer" unique_id=1474837566]
+process_mode = 3
+visible = false
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(1000, 500)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(6.180692e-05, 6.180691e-05, 6.1806946e-05, 0.41568628)
+
+[node name="End" type="Label" parent="CanvasLayer/ColorRect2" unique_id=1212756580]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -368.0
+offset_top = 170.0
+offset_right = 368.0
+offset_bottom = 298.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+theme_override_font_sizes/font_size = 128
+text = "The end"
+
+[node name="FinalScore" type="Label" parent="CanvasLayer/ColorRect2" unique_id=1841837283]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 315.0
+offset_bottom = -269.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+theme_override_font_sizes/font_size = 64
+text = "Final score: 00"
+horizontal_alignment = 1
+
+[node name="Replay" type="Button" parent="CanvasLayer/ColorRect2" unique_id=642286401]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -84.0
+offset_top = 83.0
+offset_right = 84.0
+offset_bottom = 123.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+theme_override_font_sizes/font_size = 32
+text = "Replay"
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1926932329]
+process_mode = 3
+visible = false
+custom_minimum_size = Vector2(1000, 500)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(6.180692e-05, 6.180691e-05, 6.1806946e-05, 0.41568628)
+
+[node name="MusicSlider" type="HSlider" parent="CanvasLayer/ColorRect" unique_id=414854034]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -298.75
+offset_top = -195.0
+offset_right = 298.75
+offset_bottom = -179.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFXSlider" type="HSlider" parent="CanvasLayer/ColorRect" unique_id=372958388]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -298.75
+offset_top = -142.0
+offset_right = 298.75
+offset_bottom = -126.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MusicLabel" type="Label" parent="CanvasLayer/ColorRect" unique_id=1959982978]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -225.0
+offset_right = 35.0
+offset_bottom = -202.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+text = "Music"
+
+[node name="SFXLabel" type="Label" parent="CanvasLayer/ColorRect" unique_id=754000747]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -166.0
+offset_right = 35.0
+offset_bottom = -143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+text = "Sound"
+
+[node name="FullScreen" type="Button" parent="CanvasLayer/ColorRect" unique_id=2124116338]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = -109.0
+offset_right = 74.0
+offset_bottom = -85.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+text = "Full Screen
+"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/ColorRect" unique_id=1656868317]
+position = Vector2(573, 472)
+scale = Vector2(0.71, 0.71)
+texture = ExtResource("12_fdnlq")
+
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=168426297]
+process_mode = 3
+offset_left = 21.0
+offset_top = 17.0
+offset_right = 61.0
+offset_bottom = 57.0
+mouse_default_cursor_shape = 2
+icon = ExtResource("12_6iyac")
+flat = true
+
+[node name="Death" type="AudioStreamPlayer" parent="." unique_id=482492511]
+process_mode = 3
+stream = ExtResource("14_jkdf5")
+volume_db = 10.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="CanvasLayer/ColorRect2/Replay" to="." method="_on_replay_pressed"]
+[connection signal="value_changed" from="CanvasLayer/ColorRect/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/ColorRect/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/FullScreen" to="." method="_on_full_screen_pressed"]
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

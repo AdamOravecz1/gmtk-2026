@@ -130,9 +130,11 @@ vframes = 3
 
 [node name="Plant" type="AudioStreamPlayer" parent="." unique_id=1651979413]
 stream = SubResource("AudioStreamMP3_8d8dg")
+bus = &"SFX"
 
 [node name="Harvest" type="AudioStreamPlayer" parent="." unique_id=301980955]
 stream = SubResource("AudioStreamMP3_4b0ur")
+bus = &"SFX"
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

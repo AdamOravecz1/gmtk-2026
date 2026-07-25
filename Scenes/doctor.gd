@@ -58,6 +58,9 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 			step = -step
 		
 		while abs(global_position.x - closest.global_position.x) > 1:
+			if get_tree().paused:
+				await get_tree().process_frame
+				continue
 			var old_x = global_position.x
 			path_follow.progress_ratio += step
 			await get_tree().process_frame
@@ -76,6 +79,9 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 		step = -step
 	
 	while global_position.distance_to(cord) > 50:
+		if get_tree().paused:
+			await get_tree().process_frame
+			continue
 		var old_x = global_position.x
 		path_follow.progress_ratio += step
 		await get_tree().process_frame

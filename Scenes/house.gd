@@ -30,6 +30,7 @@ func _process(delta):
 		if remaining <= 0:
 			remaining = 0
 			running = false
+			get_tree().current_scene.end()
 		
 		var seconds = int(remaining)
 		var milliseconds = int((remaining - seconds) * 10)
@@ -80,6 +81,13 @@ func infect(c):
 	running = true
 	
 func cure():
+	if color in ["red", "yellow", "blue"]:
+		get_tree().current_scene.add_point(1)
+	elif color in ["orange", "green", "purple"]:
+		get_tree().current_scene.add_point(2)
+	else:
+		get_tree().current_scene.add_point(3)
+
 	$Cure.pitch_scale = randf_range(.8, 1.1)
 	$Cure.play()
 	color = ""

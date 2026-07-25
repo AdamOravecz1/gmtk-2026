@@ -88,7 +88,7 @@ visible = false
 position = Vector2(-6, 0)
 sprite_frames = SubResource("SpriteFrames_p58rp")
 autoplay = "default"
-frame_progress = 0.12529172
+frame_progress = 0.24719612
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1644374322]
 
@@ -105,9 +105,11 @@ vframes = 3
 
 [node name="Bubble" type="AudioStreamPlayer" parent="." unique_id=1131996077]
 stream = ExtResource("5_a0ejy")
+bus = &"SFX"
 
 [node name="Pour" type="AudioStreamPlayer" parent="." unique_id=460611496]
 stream = ExtResource("6_w7ssc")
+bus = &"SFX"
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

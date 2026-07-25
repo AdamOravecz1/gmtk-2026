@@ -1,11 +1,18 @@
 extends Control
 
+var score := 0
+
 var hover_count := 0
 
 var mouse_on_dr := false
 var dragging_dr := false
 
 var chosen_houses: Array = []
+
+var paused := false
+
+@onready var music_slider: HSlider = $CanvasLayer/ColorRect/MusicSlider
+@onready var sfx_slider: HSlider = $CanvasLayer/ColorRect/SFXSlider
 
 const color_lookup := {
 	"red": Color(0.631, 0.137, 0.137, 1.0),
@@ -28,9 +35,14 @@ const colors := [
 	"white"
 ]
 
-
-
 var garden = null
+
+func _ready():
+	var music_bus = AudioServer.get_bus_index("Music")
+	var sfx_bus = AudioServer.get_bus_index("SFX")
+
+	music_slider.value = db_to_linear(AudioServer.get_bus_volume_db(music_bus))
+	sfx_slider.value = db_to_linear(AudioServer.get_bus_volume_db(sfx_bus))
 
 func find_closest_dr(garden, house):
 	var drs = get_tree().get_nodes_in_group("DR")
@@ -90,8 +102,54 @@ func _on_timer_timeout() -> void:
 	# More infected houses = longer until the next infection
 	var infected := chosen_houses.size()
 
-	var min_time := 10.0 + infected * 1.5
-	var max_time := 15.0 + infected * 3.0
+	var min_time := 10.0 + infected * 1.5 - (score / 2)
+	var max_time := 15.0 + infected * 3.0 - score
 
 	$Timer.wait_time = randf_range(min_time, max_time)
 	$Timer.start()
+
+func add_point(n):
+	score += n
+	$CanvasLayer/Score.text = str(score)
+
+
+func _on_button_pressed() -> void:
+	paused = !paused
+	if paused:
+		get_tree().paused = true
+		$CanvasLayer/ColorRect.visible = true
+	else:
+		get_tree().paused = false
+		$CanvasLayer/ColorRect.visible = false
+		
+		
+func _on_music_slider_value_changed(value: float) -> void:
+	var bus = AudioServer.get_bus_index("Music")
+	AudioServer.set_bus_volume_db(bus, linear_to_db(value))
+
+func _on_sfx_slider_value_changed(value: float) -> void:
+	var bus = AudioServer.get_bus_index("SFX")
+	AudioServer.set_bus_volume_db(bus, linear_to_db(value))
+
+
+func _on_full_screen_pressed() -> void:
+	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		
+func end():
+	$Death.play()
+	get_tree().paused = true
+	
+	$CanvasLayer/ColorRect2.process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	$CanvasLayer/ColorRect2/FinalScore.text = "Final score: " + str(score)
+	$CanvasLayer/ColorRect2.visible = true
+	
+	var tween = $CanvasLayer/ColorRect2.create_tween()
+	tween.tween_property($CanvasLayer/ColorRect2, "modulate", Color(1.0, 1.0, 1.0, 1.0), 1.0)
+
+func _on_replay_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()

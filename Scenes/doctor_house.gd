@@ -52,8 +52,11 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 				get_tree().current_scene.find_closest_dr(get_tree().current_scene.garden, self)
 
 
+
+
+
 func _on_area_2d_mouse_entered() -> void:
-	if get_tree().current_scene.garden or full and not get_tree().current_scene.dragging_dr:
+	if (full or get_tree().current_scene.garden) and not get_tree().current_scene.dragging_dr and get_tree().current_scene.garden != self:
 		mouse_on_top = true
 		($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 1.0)
 		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
@@ -61,6 +64,7 @@ func _on_area_2d_mouse_entered() -> void:
 
 
 func _on_area_2d_mouse_exited() -> void:
+	await get_tree().process_frame
 	get_tree().current_scene.hover_count -= 1
 	($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
 	if get_tree().current_scene.hover_count <= 0:

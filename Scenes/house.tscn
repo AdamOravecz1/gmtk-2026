@@ -88,7 +88,7 @@ texture = ExtResource("1_n87ef")
 visible = false
 sprite_frames = SubResource("SpriteFrames_gau5j")
 autoplay = "default"
-frame_progress = 0.5362587
+frame_progress = 0.0339712
 
 [node name="Area2D" type="Area2D" parent="." unique_id=332186678]
 
@@ -114,9 +114,11 @@ vframes = 3
 [node name="Cough" type="AudioStreamPlayer" parent="." unique_id=137808313]
 stream = ExtResource("6_l3jqw")
 pitch_scale = 1.28
+bus = &"SFX"
 
 [node name="Cure" type="AudioStreamPlayer" parent="." unique_id=1986712572]
 stream = ExtResource("7_gau5j")
+bus = &"SFX"
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

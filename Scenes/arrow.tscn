@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dyqwsu8u0d6du" path="res://Sprites/Arrow.png" id="1_2u0bd"]
 [ext_resource type="Script" uid="uid://iba7vq387i4t" path="res://Scenes/arrow.gd" id="2_h5x2m"]
 [ext_resource type="Texture2D" uid="uid://u62yxwlgyah3" path="res://Sprites/Recteng.png" id="3_40cdi"]
+[ext_resource type="AudioStream" uid="uid://cy47m8nawc58o" path="res://Sounds/universfield-mouse-click-351398.mp3" id="4_xxsqv"]
 
 [node name="Arrow" type="Sprite2D" unique_id=369740570]
 texture = ExtResource("1_2u0bd")
@@ -11,3 +12,7 @@ script = ExtResource("2_h5x2m")
 [node name="Rectangle" type="Sprite2D" parent="." unique_id=765829497]
 position = Vector2(0, 13)
 texture = ExtResource("3_40cdi")
+
+[node name="Click" type="AudioStreamPlayer" parent="." unique_id=2101373929]
+stream = ExtResource("4_xxsqv")
+bus = &"SFX"
