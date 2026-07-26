@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://d2fxsxy3b7u8s"]
+
+[ext_resource type="Texture2D" uid="uid://do6xafk1yky0h" path="res://Sprites/Reminder.png" id="1_p3sqf"]
+[ext_resource type="Script" uid="uid://cp7atr4ugqpbt" path="res://Scenes/pointing_arrow.gd" id="1_vme8j"]
+
+[node name="Reminder" type="Node2D" unique_id=452264742]
+script = ExtResource("1_vme8j")
+
+[node name="PointingArrow" type="Sprite2D" parent="." unique_id=1497948666]
+texture = ExtResource("1_p3sqf")

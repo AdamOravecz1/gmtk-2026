@@ -28,6 +28,10 @@ var countdown_time := 12.0 # seconds
 var start_time: int
 var running := false
 
+var remaining := 0.0
+
+
+
 func _ready():
 	garden.material = garden.material.duplicate()
 	await get_tree().current_scene.ready
@@ -37,9 +41,9 @@ func _process(delta):
 		disable_highlight()
 	elif mouse_on_top and not get_tree().current_scene.dragging_dr:
 		enable_higlight()
+
 	if running:
-		var elapsed = (Time.get_ticks_msec() - start_time) / 1000.0
-		var remaining = countdown_time - elapsed
+		remaining -= delta
 		
 		if remaining <= 0:
 			remaining = 0
@@ -47,7 +51,7 @@ func _process(delta):
 		
 		var seconds = int(remaining)
 		var milliseconds = int((remaining - seconds) * 10)
-		
+
 		time.text = "%02d.%d" % [seconds, milliseconds]
 
 func _input(event):
@@ -57,6 +61,7 @@ func _input(event):
 		if arrow:
 			arrow.queue_free()
 			arrow = null
+
 			await get_tree().process_frame
 			get_tree().current_scene.garden = null
 
@@ -87,6 +92,7 @@ func _on_area_2d_mouse_entered() -> void:
 
 
 func _on_area_2d_mouse_exited() -> void:
+
 	await get_tree().process_frame
 	get_tree().current_scene.hover_count -= 1
 	($Garden.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
@@ -193,6 +199,7 @@ func _on_yellow_input_event(viewport: Node, event: InputEvent, shape_idx: int) -
 			close_selector()
 			
 func _on_bg_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+
 	await get_tree().process_frame
 	if event is InputEventMouseButton and not herb.visible:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -201,7 +208,7 @@ func _on_bg_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> vo
 
 func start_timer():
 	time.visible = true
-	start_time = Time.get_ticks_msec()
+	remaining = countdown_time
 	running = true
 	$Plant.play()
 
@@ -221,6 +228,12 @@ func _on_timer_timeout() -> void:
 	
 func harvest():
 	$Harvest.play()
+	herb.frame = 0
+	herb.visible = false
+	symbols.visible = false
+	color = ""
+	
+func tutorial_harvest():
 	herb.frame = 0
 	herb.visible = false
 	symbols.visible = false

@@ -4,6 +4,8 @@ extends Node2D
 
 @onready var talking_dr := get_tree().get_first_node_in_group("TalkingDR")
 
+@onready var reminder_scene := preload("res://Scenes/reminder.tscn")
+var reminder_created := false
 
 @export var clickable := false
 
@@ -12,7 +14,9 @@ extends Node2D
 
 var countdown_time := 30.0 # seconds
 var start_time: int
+var remaining_time := 30.0
 var running := false
+
 
 const color_symbol := {
 	"red": 1,
@@ -29,19 +33,21 @@ func _ready():
 
 func _process(delta):
 	if running:
-		var elapsed = (Time.get_ticks_msec() - start_time) / 1000.0
-		var remaining = countdown_time - elapsed
-		
-		if remaining <= 0:
-			remaining = 0
+
+		remaining_time -= delta
+
+		if remaining_time <= 5 and !reminder_created:
+			create_reminder()
+
+		if remaining_time <= 0:
+			remaining_time = 0
 			running = false
-			
 			get_tree().current_scene.end()
-		
-		var seconds = int(remaining)
-		var milliseconds = int((remaining - seconds) * 10)
-		
-		time.text = "%02d.%d" % [seconds, milliseconds]
+
+		var seconds = int(remaining_time)
+		var tenths = int((remaining_time - seconds) * 10)
+
+		time.text = "%02d.%d" % [seconds, tenths]
 
 func _on_area_2d_mouse_entered() -> void:
 	if get_tree().current_scene.garden and clickable:
@@ -75,11 +81,11 @@ func infect(c):
 	$Cough.play()
 	color = c
 	if color in ["red", "yellow", "blue"]:
-		countdown_time = 40
+		remaining_time = 40
 	elif color in ["orange", "green", "purple"]:
-		countdown_time = 50
+		remaining_time = 50
 	else:
-		countdown_time = 60
+		remaining_time = 60
 	$AnimatedSprite2D.visible = true
 	$Symbols.visible = true
 	$Symbols.frame = color_symbol[color]
@@ -103,9 +109,10 @@ func cure():
 			get_tree().current_scene.add_point(2)
 		else:
 			get_tree().current_scene.add_point(3)
-
-	$Cure.pitch_scale = randf_range(.8, 1.1)
-	$Cure.play()
+	
+	if not get_tree().current_scene.in_tutorial:
+		$Cure.pitch_scale = randf_range(.8, 1.1)
+		$Cure.play()
 	color = ""
 	$AnimatedSprite2D.visible = false
 	$Symbols.visible = false
@@ -113,3 +120,26 @@ func cure():
 	get_tree().current_scene.chosen_houses.erase(self)
 	time.visible = false
 	running = false
+	var reminder = get_node_or_null("Reminder")
+	if reminder:
+		$Clock.stop()
+		reminder.queue_free()
+		reminder_created = false
+		
+		
+func tutorial_cure():
+	color = ""
+	$AnimatedSprite2D.visible = false
+	$Symbols.visible = false
+	$AnimatedSprite2D.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	get_tree().current_scene.chosen_houses.erase(self)
+	time.visible = false
+	running = false
+
+	
+func create_reminder():
+	$Clock.play()
+	reminder_created = true
+	var reminder = reminder_scene.instantiate()
+	add_child(reminder)
+	reminder.position.y -= 80

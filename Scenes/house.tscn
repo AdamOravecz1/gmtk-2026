@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bi66vuubsle0d" path="res://Sprites/Symbols.png" id="5_xi0mm"]
 [ext_resource type="AudioStream" uid="uid://81tbvdy6p2s7" path="res://Sounds/freesound_community-man-coughing-cough-101979.wav" id="6_l3jqw"]
 [ext_resource type="AudioStream" uid="uid://cr0fibnaiwu41" path="res://Sounds/creativesoumen-huh-relief-322749.wav" id="7_gau5j"]
+[ext_resource type="AudioStream" uid="uid://st4mc36xwkti" path="res://Sounds/dragon-studio-slow-cinematic-clock-ticking-405471.mp3" id="8_gau5j"]
 
 [sub_resource type="Shader" id="Shader_xi0mm"]
 code = "shader_type canvas_item;
@@ -88,7 +89,7 @@ texture = ExtResource("1_n87ef")
 visible = false
 sprite_frames = SubResource("SpriteFrames_gau5j")
 autoplay = "default"
-frame_progress = 0.0339712
+frame_progress = 0.66785264
 
 [node name="Area2D" type="Area2D" parent="." unique_id=332186678]
 
@@ -118,6 +119,10 @@ bus = &"SFX"
 
 [node name="Cure" type="AudioStreamPlayer" parent="." unique_id=1986712572]
 stream = ExtResource("7_gau5j")
+bus = &"SFX"
+
+[node name="Clock" type="AudioStreamPlayer" parent="." unique_id=1512245369]
+stream = ExtResource("8_gau5j")
 bus = &"SFX"
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

@@ -63,10 +63,12 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 		
 		while abs(global_position.x - closest.global_position.x) > 1:
 			if get_tree().paused:
+
 				await get_tree().process_frame
 				continue
 			var old_x = global_position.x
 			path_follow.progress_ratio += step
+
 			await get_tree().process_frame
 
 			if global_position.x > old_x:
@@ -89,6 +91,7 @@ func move_here(cord: Vector2, lv: int, first_pos = null, second_pos = null) -> v
 				continue
 		var old_x = global_position.x
 		path_follow.progress_ratio += step
+
 		await get_tree().process_frame
 
 		if global_position.x > old_x:
@@ -142,11 +145,16 @@ func use_stairs(changer):
 	var step := 0.002
 	
 	while abs(stair_follow.progress_ratio - target) > 0.001:
+		if get_tree():
+			if get_tree().paused:
+				await get_tree().process_frame
+				continue
 		if going_down:
 			stair_follow.progress_ratio -= step
 		else:
 			stair_follow.progress_ratio += step
 		
+
 		await get_tree().process_frame
 	
 	stair_follow.progress_ratio = target
@@ -232,6 +240,7 @@ func _input(event):
 		if arrow:
 			arrow.queue_free()
 			arrow = null
+
 			await get_tree().process_frame
 			get_tree().current_scene.dragging_dr = false
 			var mouse_level = get_level_from_mouse(get_global_mouse_position())

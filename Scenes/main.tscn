@@ -14,8 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://bqshdfftbvsh3" path="res://Sprites/PauseIcon.png" id="12_6iyac"]
 [ext_resource type="Texture2D" uid="uid://cfhhrms5nlg6e" path="res://Sprites/Recipe.png" id="12_fdnlq"]
 [ext_resource type="AudioStream" uid="uid://dxkcrplox514w" path="res://Sounds/freesound_community-suspiro-tristeza-46553.mp3" id="14_jkdf5"]
+[ext_resource type="FontFile" uid="uid://coh44635eghtj" path="res://Brotheric Regular Demo.otf" id="15_k12tt"]
 [ext_resource type="PackedScene" uid="uid://8nt2mfev8ht4" path="res://Scenes/talking_dr.tscn" id="15_wsu2k"]
-[ext_resource type="PackedScene" uid="uid://bicrq6sqq3qgx" path="res://Scenes/pointing_arrow.tscn" id="16_k12tt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jjvhh"]
 texture = ExtResource("1_jjgbg")
@@ -273,7 +273,12 @@ position = Vector2(1039, 388)
 curve = SubResource("Curve2D_6iyac")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=165865420]
-position = Vector2(576, 327)
+position = Vector2(576, -215)
+
+[node name="Moon" type="Sprite2D" parent="Camera2D" unique_id=420962235]
+modulate = Color(1.1638972, 1.1638972, 1.1638972, 1)
+position = Vector2(528, -266)
+texture = ExtResource("7_6bp64")
 
 [node name="LevelChangers" type="Control" parent="." unique_id=949330900]
 anchors_preset = 0
@@ -307,11 +312,6 @@ position = Vector2(1039, 228)
 [node name="Timer" type="Timer" parent="." unique_id=2073893536]
 wait_time = 5.0
 one_shot = true
-
-[node name="Moon" type="Sprite2D" parent="." unique_id=420962235]
-modulate = Color(1.1638972, 1.1638972, 1.1638972, 1)
-position = Vector2(1104, 61)
-texture = ExtResource("7_6bp64")
 
 [node name="Design32" type="Control" parent="." unique_id=1113172667]
 anchors_preset = 0
@@ -710,6 +710,7 @@ bus = &"Music"
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1161783920]
 
 [node name="Score" type="Label" parent="CanvasLayer" unique_id=1377035793]
+visible = false
 offset_left = 677.0
 offset_top = 581.0
 offset_right = 1149.0
@@ -797,9 +798,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -298.75
-offset_top = -195.0
+offset_top = -227.0
 offset_right = 298.75
-offset_bottom = -179.0
+offset_bottom = -211.0
 grow_horizontal = 2
 grow_vertical = 2
 max_value = 1.0
@@ -814,9 +815,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -298.75
-offset_top = -142.0
+offset_top = -174.0
 offset_right = 298.75
-offset_bottom = -126.0
+offset_bottom = -158.0
 grow_horizontal = 2
 grow_vertical = 2
 max_value = 1.0
@@ -831,9 +832,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -35.0
-offset_top = -225.0
+offset_top = -257.0
 offset_right = 35.0
-offset_bottom = -202.0
+offset_bottom = -234.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("11_d1ilt")
@@ -847,9 +848,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -35.0
-offset_top = -166.0
+offset_top = -198.0
 offset_right = 35.0
-offset_bottom = -143.0
+offset_bottom = -175.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("11_d1ilt")
@@ -863,14 +864,32 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -74.0
-offset_top = -109.0
+offset_top = -141.0
 offset_right = 74.0
-offset_bottom = -85.0
+offset_bottom = -117.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("11_d1ilt")
 text = "Full Screen
+"
+
+[node name="Resume" type="Button" parent="CanvasLayer/ColorRect" unique_id=1752493222]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = -110.0
+offset_right = 74.0
+offset_bottom = -86.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+text = "Resume
 "
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/ColorRect" unique_id=1656868317]
@@ -880,6 +899,7 @@ texture = ExtResource("12_fdnlq")
 
 [node name="Button" type="Button" parent="CanvasLayer" unique_id=168426297]
 process_mode = 3
+visible = false
 offset_left = 21.0
 offset_top = 17.0
 offset_right = 61.0
@@ -893,11 +913,64 @@ process_mode = 3
 stream = ExtResource("14_jkdf5")
 volume_db = 10.0
 
-[node name="TalkingDr" parent="." unique_id=439100258 groups=["TalkingDR"] instance=ExtResource("15_wsu2k")]
-position = Vector2(108, 529)
+[node name="Title" type="Label" parent="." unique_id=1872336706]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -317.0
+offset_top = -846.0
+offset_right = 317.0
+offset_bottom = -479.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.56, 0.033600003, 0.033600003, 1)
+theme_override_fonts/font = ExtResource("15_k12tt")
+theme_override_font_sizes/font_size = 128
+text = "Plague 
+      Manager"
 
-[node name="PointingArrow" parent="." unique_id=2058518313 instance=ExtResource("16_k12tt")]
+[node name="Start" type="Button" parent="Title" unique_id=1852840841]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = 210.5
+offset_right = 138.0
+offset_bottom = 250.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+theme_override_font_sizes/font_size = 32
+text = "Start Game"
+
+[node name="Settings" type="Button" parent="Title" unique_id=1590777088]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = 266.5
+offset_right = 138.0
+offset_bottom = 306.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("11_d1ilt")
+theme_override_font_sizes/font_size = 32
+text = "Setting"
+
+[node name="TalkingDr" parent="." unique_id=439100258 instance=ExtResource("15_wsu2k")]
 visible = false
+position = Vector2(108, 529)
 
 [node name="Arrows" type="Control" parent="." unique_id=426010193]
 anchors_preset = 0
@@ -909,4 +982,7 @@ offset_bottom = 40.0
 [connection signal="value_changed" from="CanvasLayer/ColorRect/MusicSlider" to="." method="_on_music_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/ColorRect/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/FullScreen" to="." method="_on_full_screen_pressed"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Title/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Title/Settings" to="." method="_on_settings_pressed"]

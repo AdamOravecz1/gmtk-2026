@@ -17,7 +17,7 @@ var paused := false
 
 @onready var music_slider: HSlider = $CanvasLayer/ColorRect/MusicSlider
 @onready var sfx_slider: HSlider = $CanvasLayer/ColorRect/SFXSlider
-@onready var pointing_arrow: Node2D = $PointingArrow
+
 
 @onready var arrow_scene := preload("res://Scenes/pointing_arrow.tscn")
 
@@ -109,8 +109,8 @@ func _on_timer_timeout() -> void:
 	# More infected houses = longer until the next infection
 	var infected := chosen_houses.size()
 
-	var min_time := 10.0 + infected * 1.5 - (score / 2)
-	var max_time := 15.0 + infected * 3.0 - score
+	var min_time := 10.0 + infected * 1.5 - (score / 4)
+	var max_time := 15.0 + infected * 3.0 - (score / 2)
 
 	$Timer.wait_time = randf_range(min_time, max_time)
 	$Timer.start()
@@ -128,7 +128,8 @@ func _on_button_pressed() -> void:
 	else:
 		get_tree().paused = false
 		$CanvasLayer/ColorRect.visible = false
-		
+
+
 		
 func _on_music_slider_value_changed(value: float) -> void:
 	var bus = AudioServer.get_bus_index("Music")
@@ -158,7 +159,11 @@ func end():
 	tween.tween_property($CanvasLayer/ColorRect2, "modulate", Color(1.0, 1.0, 1.0, 1.0), 1.0)
 
 func _on_replay_pressed() -> void:
+	for i in get_children():
+		i.queue_free()
+		
 	get_tree().paused = false
+
 	get_tree().reload_current_scene()
 	
 func delete_arrows():
@@ -226,19 +231,48 @@ func tutorial6():
 	arrow3.global_position = $DoctorHouse2.global_position - Vector2(0, 80)
 	
 func finish_tutorial():
-	in_tutorial = false
+	
 	$Timer.start()
 	for i in $Houses.get_children():
+		i.tutorial_cure()
 		i.clickable = true
+		
+	
 		
 	$DoctorHouse.clickable = true
 	$DoctorHouse2.clickable = true
 	$DoctorHouse3.clickable = true
+	$DoctorHouse.tutorial_harvest()
+	$DoctorHouse2.tutorial_harvest()
+	$DoctorHouse3.tutorial_harvest()
 	
 	$Garden.clickable = true
 	$Garden2.clickable = true
 	$Garden3.clickable = true
+	$Garden.tutorial_harvest()
+	$Garden2.tutorial_harvest()
+	$Garden3.tutorial_harvest()
 
 	for i in get_tree().get_nodes_in_group("DR"):
 		i.clickable = true
+		
+	delete_arrows()
 	
+	in_tutorial = false
+
+
+func _on_settings_pressed() -> void:
+	_on_button_pressed()
+
+
+func _on_resume_pressed() -> void:
+	_on_button_pressed()
+
+
+func _on_start_pressed() -> void:
+	var tween = get_tree().create_tween()
+	tween.tween_property($Camera2D, "global_position", Vector2($Camera2D.global_position.x, 322), 3.0)
+	await tween.finished
+	$CanvasLayer/Button.visible = true
+	$CanvasLayer/Score.visible = true
+	$TalkingDr.start()

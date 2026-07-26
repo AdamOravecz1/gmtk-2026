@@ -6,7 +6,7 @@
 [ext_resource type="FontFile" uid="uid://dhw8iuiik1b23" path="res://PixelOperator.ttf" id="3_onv4t"]
 [ext_resource type="AudioStream" uid="uid://cq30n7ug4glw8" path="res://Sounds/soundreality-keyboard-typing-sfx-525007.mp3" id="5_j0is1"]
 
-[node name="TalkingDr" type="Node2D" unique_id=439100258]
+[node name="TalkingDr" type="Node2D" unique_id=439100258 groups=["TalkingDR"]]
 script = ExtResource("1_432kc")
 
 [node name="DrProfil" type="Sprite2D" parent="." unique_id=1258283082]
@@ -30,3 +30,23 @@ text = "0000"
 
 [node name="Talk" type="AudioStreamPlayer" parent="." unique_id=360251224]
 stream = ExtResource("5_j0is1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1710229579]
+visible = false
+
+[node name="Skip" type="Button" parent="CanvasLayer" unique_id=1233842768]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -164.0
+offset_top = 37.0
+offset_right = 164.0
+offset_bottom = 77.0
+grow_horizontal = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_onv4t")
+theme_override_font_sizes/font_size = 32
+text = "Skip tutorial"
+flat = true
+
+[connection signal="pressed" from="CanvasLayer/Skip" to="." method="_on_skip_pressed"]

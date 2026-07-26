@@ -40,6 +40,7 @@ func _input(event):
 		if arrow:
 			arrow.queue_free()
 			arrow = null
+
 			await get_tree().process_frame
 			get_tree().current_scene.garden = null
 
@@ -71,6 +72,7 @@ func _on_area_2d_mouse_entered() -> void:
 
 
 func _on_area_2d_mouse_exited() -> void:
+
 	await get_tree().process_frame
 	get_tree().current_scene.hover_count -= 1
 	($Sprite2D.material as ShaderMaterial).set_shader_parameter("outline_size", 0.0)
@@ -172,7 +174,15 @@ func can_mix(incoming_color: String) -> bool:
 
 func harvest():
 	color = ""
+
 	$Pour.play()
+	full = false
+	$AnimatedSprite2D.visible = false
+	$Symbols.visible = false
+
+
+func tutorial_harvest():
+	color = ""
 	full = false
 	$AnimatedSprite2D.visible = false
 	$Symbols.visible = false

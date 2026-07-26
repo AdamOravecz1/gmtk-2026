@@ -28,10 +28,13 @@ var full_text := ""
 
 var speed := 0.03
 
+var tutorial_skiped := true
 
-func _ready() -> void:
-
+func start():
+	visible = true
+	$CanvasLayer.visible = true
 	show_line()
+	tutorial_skiped = false
 
 
 func show_line():
@@ -72,6 +75,8 @@ func next_line():
 		line_index += 1
 		show_line()
 	if line_index == 1:
+
+		await get_tree().process_frame
 		get_tree().current_scene.tutorial1()
 	if line_index == 2:
 		get_tree().current_scene.tutorial2()
@@ -82,15 +87,11 @@ func next_line():
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		
-		next_line()
 
-func _on_button_pressed() -> void:
-	next_line()
+		await get_tree().process_frame
+		if not tutorial_skiped:
+			next_line()
 
-
-func _on_button_2_pressed() -> void:
-	$CanvasLayer.queue_free()
 	
 func next():
 	line_index += 1
@@ -101,3 +102,9 @@ func next():
 		get_tree().current_scene.tutorial5()
 	if line_index == 8:
 		get_tree().current_scene.tutorial6()
+
+
+func _on_skip_pressed() -> void:
+	tutorial_skiped = true
+	get_tree().current_scene.finish_tutorial()
+	queue_free()

@@ -13,7 +13,7 @@ config_version=5
 config/name="GMTK2026"
 run/main_scene="uid://bem03h5wmwj0l"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://bsi87epb5taek"
 
 [audio]
 
@@ -33,3 +33,4 @@ textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.16346106, 0.24307528, 0.25322384, 1)
